@@ -25,7 +25,7 @@
       bindkey -M menuselect 'j' vi-down-line-or-history
       bindkey -v '^?' backward-delete-char
       export KEYTIMEOUT=1  
-      export FUNCNEST=15
+      export FUNCNEST=1000
 
       # Define a function to set KEYMAP if not defined
   function zle-keymap-select {
@@ -86,7 +86,7 @@
       alias doom="~/.emacs.d/bin/doom"
       
       # Initialize Starship prompt
-      eval "$(starship init zsh)"
+      # eval "$(starship init zsh)"
       
       # Add local binaries to PATH
       PATH="$HOME/.local/bin:$PATH"
@@ -110,7 +110,7 @@
       nnoremap <F2> :set invpaste paste?<CR>
       imap <F2> <C-O>:set invpaste paste?<CR>
       set pastetoggle=<F2>
-      " set textwidth=79
+      set textwidth=79
       set formatoptions=tcqrn1
       set tabstop=2
       set shiftwidth=2
@@ -145,30 +145,7 @@
       nnoremap tk   :tapprev<CR>
       nnoremap td   :tabclose<CR>
       nnoremap tn   :tabnew<CR>
-      set bg=dark
-      colorscheme gruvbox
-      call plug#begin('~/.vim/plugged')
-      Plug 'tpope/vim-sensible'
-      Plug 'airblade/vim-gitgutter'
-      Plug 'editorconfig/editorconfig-vim'
-      Plug 'itchyny/lightline.vim'
-      Plug 'junegunn/fzf'
-      Plug 'junegunn/fzf.vim'
-      Plug 'mattn/emmet-vim'
-      Plug 'scrooloose/nerdtree'
-      Plug 'terryma/vim-multiple-cursors'
-      Plug 'tpope/vim-eunuch'
-      Plug 'tpope/vim-surround'
-      Plug 'w0rp/ale'
-      Plug 'voldikss/vim-floaterm'
-      Plug 'ap/vim-css-color'
-      Plug 'vifm/vifm.vim'
-      Plug 'vim-scripts/c.vim'
-      Plug 'rafi/awesome-vim-colorschemes'
-      Plug 'morhetz/gruvbox'
-      Plug 'sheerun/vim-polyglot'
-      call plug#end()
-      so ~/.vim/plugins.vim
+      set bg=dark      
       let g:lightline = {
         \ 'colorscheme': 'sonokai',
       \}
