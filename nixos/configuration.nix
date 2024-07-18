@@ -20,10 +20,23 @@
 	grub.version = 2;
 	grub.efiSupport = true;
 	grub.device = "nodev";
-	grub.useOSProber = true;
-	grub.extraConfig = "set timeout = 60";
+  grub.useOSProber = true;
+  grub.theme = "/etc/grub.d/themes/gruvbox-dark/grub-gruvbox/theme.txt";
+  grub.extraConfig = ''
+    set timeout = 60
+  '';
 	efi.canTouchEfiVariables = true;
   };
+
+  programs = {
+    zsh = {
+      enable = true;
+      zsh-autoenv.enable = true;
+      syntaxHighlighting.enable = true;
+    };
+  };
+
+  users.defaultUserShell = pkgs.zsh;
 
   home-manager = {
     useUserPackages = true;
@@ -204,6 +217,10 @@
     home-manager
     font-manager
     catppuccin
+
+    # Theming
+    gruvbox-gtk-theme
+    gruvbox-plus-icons
   ];
 
   fonts.fonts = with pkgs; [
