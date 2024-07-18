@@ -4,9 +4,12 @@
   home.username = "john";  # Replace 'john' with your actual username
   home.homeDirectory = "/home/john";  # Adjust the path if necessary
   home.stateVersion = "24.05";
+  
+   
 
   programs.zsh = {
     enable = true;
+    #catppuccin.enable = true;
     # Other Zsh configurations...
 
     initExtra = ''
@@ -37,6 +40,12 @@
     fi
   }
 
+  #type starship_zle-keymap-select >/dev/null || \
+  #{
+  #  echo "Load starship"
+  #  eval "$(/usr/local/bin/starship init zsh)"
+  #}
+
   zle -N zle-keymap-select
   zle-line-init() {
     zle -K viins
@@ -65,11 +74,11 @@
       HISTFILE=~/.zsh_history
       SAVEHIST=5000
       export EDITOR=vim
-      source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+      # source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
       ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
       ZSH_HIGHLIGHT_PATTERNS=('rm -rf *' 'fg=white,bold,bg=red')
       alias nixb="sudo nixos-rebuild switch"
-      alias homeb="sudo home-manager switch"
+      alias homeb="home-manager switch"
       alias cdd="cd .."
       alias rm="rm -i"
       alias mv="mv -i"
@@ -84,7 +93,9 @@
       alias crone="crontab -e"
       alias cronl="crontab -l"
       alias doom="~/.emacs.d/bin/doom"
-      
+      alias homeconf="vim .config/home-manager/home.nix"
+      alias nixconf="sudo vim /etc/nixos/configuration.nix"
+	
       # Initialize Starship prompt
       # eval "$(starship init zsh)"
       
@@ -94,12 +105,15 @@
   };
 
   programs.neovim = {
-    enable = true;
+    enable = false;
     # Configure Neovim options here
   };
 
   programs.vim = {
     enable = true;
+    defaultEditor = true;
+    # catppuccin.enable = true;
+    plugins = with pkgs.vimPlugins; [ gruvbox colorizer catppuccin-vim lightline-vim ];
     extraConfig = ''
       set nocompatible
       filetype off
@@ -145,9 +159,10 @@
       nnoremap tk   :tapprev<CR>
       nnoremap td   :tabclose<CR>
       nnoremap tn   :tabnew<CR>
-      set bg=dark      
+      set bg=dark
+      colorscheme gruvbox
       let g:lightline = {
-        \ 'colorscheme': 'sonokai',
+        \ 'colorscheme': 'catppuccin_mocha',
       \}
       autocmd StdinReadPre * let s:std_in=1
       autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
@@ -158,6 +173,7 @@
 
   programs.alacritty = {
     enable = true;
+    # catppuccin.enable = true;
     settings = {
       colors.draw_bold_text_with_bright_colors = true;
       window = {
@@ -200,28 +216,28 @@
       };
       colors = {
         primary = {
-          background = "0x2c2e34";
-          foreground = "0xe2e2e3";
+          background = "0x282828";
+          foreground = "0xebdbb2";
         };
         normal = {
-          black = "0x181819";
-          red = "0xfc5d7c";
-          green = "0x9ed072";
-          yellow = "0xe7c664";
-          blue = "0x76cce0";
-          magenta = "0xb39df3";
-          cyan = "0xf39660";
-          white = "0xe2e2e3";
+          black = "0x282828";
+          red = "0xcc241d";
+          green = "0x98971a";
+          yellow = "0xd79921";
+          blue = "0x458588";
+          magenta = "0xb16286";
+          cyan = "0x689d6a";
+          white = "0xa89984";
         };
         bright = {
-          black = "0x7f8490";
-          red = "0xfc5d7c";
-          green = "0x9ed072";
-          yellow = "0xe7c664";
-          blue = "0x76cce0";
-          magenta = "0xb39df3";
-          cyan = "0xf39660";
-          white = "0xe2e2e3";
+          black = "0x928374";
+          red = "0xfb4934";
+          green = "0xb8bb26";
+          yellow = "0xfabd2f";
+          blue = "0x83a598";
+          magenta = "0xd3869b";
+          cyan = "0x8ec07c";
+          white = "0xebdbb2";
         };
       };
       keyboard = {
@@ -246,92 +262,92 @@
     };
   };
 
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;  # Adjust if using a different shell
-    settings = {
-      battery = {
-        full_symbol = "🔋";
-        charging_symbol = "🔌";
-        discharging_symbol = "⚡";
-        display = [
-          {
-            threshold = 30;
-            style = "bold red";
-          }
-        ];
-      };
-
-      character = {
-        error_symbol = "[✖](bold red) ";
-      };
-
-      cmd_duration = {
-        min_time = 10000;  # Show command duration over 10,000 milliseconds (=10 sec)
-        format = " took [$duration]($style)";
-      };
-
-      directory = {
-        truncation_length = 5;
-        format = "[$path]($style)[$lock_symbol]($lock_style) ";
-      };
-
-      git_branch = {
-        format = " [$symbol$branch]($style) ";
-        symbol = "🍣 ";
-        style = "bold yellow";
-      };
-
-      git_commit = {
-        commit_hash_length = 8;
-        style = "bold white";
-      };
-
-      git_state = {
-        #progress_divider = " of ";
-      };
-
-      hostname = {
-        ssh_only = false;
-        format = "<[$hostname]($style)>";
-        trim_at = "-";
-        style = "bold 202";
-        disabled = false;
-      };
-
-      julia = {
-        format = "[$symbol$version]($style) ";
-        symbol = "ஃ ";
-        style = "bold green";
-      };
-
-      package = {
-        disabled = true;
-      };
-
-      python = {
-        format = "[$symbol$version]($style) ";
-        style = "bold green";
-      };
-
-      rust = {
-        format = "[$symbol$version]($style) ";
-        style = "bold green";
-      };
-
-      time = {
-        time_format = "%T";
-        format = "🕙 $time($style) ";
-        style = "bright-white";
-        disabled = false;
-      };
-
-      username = {
-        style_user = "bold 135";
-        show_always = true;
-      };
-    };
-  };
-
+#  programs.starship = {
+#    enable = true;
+#    enableZshIntegration = true;  # Adjust if using a different shell
+#    settings = {
+#      battery = {
+#        full_symbol = "🔋";
+#        charging_symbol = "🔌";
+#        discharging_symbol = "⚡";
+#        display = [
+#          {
+#            threshold = 30;
+#            style = "bold red";
+#          }
+#        ];
+#      };
+#
+#      character = {
+#        error_symbol = "[✖](bold red) ";
+#      };
+#
+#      cmd_duration = {
+#        min_time = 10000;  # Show command duration over 10,000 milliseconds (=10 sec)
+#        format = " took [$duration]($style)";
+#      };
+#
+#      directory = {
+#        truncation_length = 5;
+#        format = "[$path]($style)[$lock_symbol]($lock_style) ";
+#      };
+#
+#      git_branch = {
+#        format = " [$symbol$branch]($style) ";
+#        symbol = "🍣 ";
+#        style = "bold yellow";
+#      };
+#
+#      git_commit = {
+#        commit_hash_length = 8;
+#        style = "bold white";
+#      };
+#
+#      git_state = {
+#        #progress_divider = " of ";
+#      };
+#
+#      hostname = {
+#        ssh_only = false;
+#        format = "<[$hostname]($style)>";
+#        trim_at = "-";
+#        style = "bold 202";
+#        disabled = false;
+#      };
+#
+#      julia = {
+#        format = "[$symbol$version]($style) ";
+#        symbol = "ஃ ";
+#        style = "bold green";
+#      };
+#
+#      package = {
+#        disabled = true;
+#      };
+#
+#      python = {
+#        format = "[$symbol$version]($style) ";
+#        style = "bold green";
+#      };
+#
+#      rust = {
+#        format = "[$symbol$version]($style) ";
+#        style = "bold green";
+#      };
+#
+#      time = {
+#        time_format = "%T";
+#        format = "🕙 $time($style) ";
+#        style = "bright-white";
+#        disabled = false;
+#      };
+#
+#      username = {
+#        style_user = "bold 135";
+#        show_always = true;
+#      };
+#    };
+#  };
+#
   # Add more programs and their configurations as needed
 }

@@ -38,8 +38,11 @@
       };
     };
   };
+  
+  #catppuccin.enable = true;
+  #catppuccin.flavor = "mocha";
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "Lambda"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -200,11 +203,7 @@
     protonmail-bridge
     home-manager
     font-manager
-
-    # nvidia
-    #nvidia-x11
-    #nvidia-setting
-    #nvidia-persistenced
+    catppuccin
   ];
 
   fonts.fonts = with pkgs; [
