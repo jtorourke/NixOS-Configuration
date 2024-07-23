@@ -20,10 +20,9 @@
 	grub.version = 2;
 	grub.efiSupport = true;
 	grub.device = "nodev";
-  grub.useOSProber = true;
-  grub.theme = "/etc/grub.d/themes/gruvbox-dark/grub-gruvbox/theme.txt";
+  grub.useOSProber = true; 
   grub.extraConfig = ''
-    set timeout = 60
+    GRUB_TIMEOUT=60
   '';
 	efi.canTouchEfiVariables = true;
   };
@@ -87,7 +86,16 @@
   services.xserver.enable = true;
 
   # Enable the Budgie Desktop environment.
-  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager = {
+    lightdm = {
+      enable = true;
+      greeters.slick.enable = true;
+      greeters.slick.theme.name = "Gruvbox-Dark";
+      greeters.slick.iconTheme.name = "Gruvbox-Plus-Dark";
+      background
+      = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
+    };
+  };
   services.xserver.desktopManager.budgie.enable = true;
 
   # Configure keymap in X11
