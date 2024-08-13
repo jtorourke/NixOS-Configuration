@@ -1,11 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "john";  # Replace 'john' with your actual username
+  home.username = "john";  # Replace with your actual username
   home.homeDirectory = "/home/john";  # Adjust the path if necessary
   home.stateVersion = "24.05";
-  
-   
 
   programs.zsh = {
     enable = true;

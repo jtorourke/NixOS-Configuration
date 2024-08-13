@@ -16,15 +16,23 @@
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
   boot.loader = {
-	grub.enable = true;
-	grub.version = 2;
-	grub.efiSupport = true;
-	grub.device = "nodev";
-  grub.useOSProber = true; 
-  grub.extraConfig = ''
-    GRUB_TIMEOUT=60
-  '';
-	efi.canTouchEfiVariables = true;
+    grub = {
+      enable = true;
+      efiSupport = true;
+      device = "nodev";
+      useOSProber = true;
+      splashImage = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
+      #font = "${pkgs.iosevka}/share/fonts/Iosevka-Regular.ttf";
+      extraConfig = ''
+        GRUB_TIMEOUT=60
+      '';
+    };
+
+    #systemd-boot.enable = true;
+    efi = {
+      canTouchEfiVariables = true;
+      #efiSysMountPoint = "/dev/nvme0n1p1";
+    };
   };
 
   programs = {
@@ -92,8 +100,7 @@
       greeters.slick.enable = true;
       greeters.slick.theme.name = "Gruvbox-Dark";
       greeters.slick.iconTheme.name = "Gruvbox-Plus-Dark";
-      background
-      = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
+      background = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
     };
   };
   services.xserver.desktopManager.budgie.enable = true;
@@ -191,44 +198,65 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # System Packages
     wget
+    curl
     xorg.xrandr
     os-prober
-    emacs
-    vim
-    neovim
-    rofi
-    qtile
-    julia
     ranger
     nnn
     neofetch
     screenfetch
     fastfetch
     alacritty
-    python3
     zsh
     starship
-    rstudio
-    rustc
     git
-    cargo
+    home-manager
+    ripgrep
+    coreutils
+    fd
+
+    # Misc. Programs
     spotify
     discord
     qmk
     vial
-    iosevka
-    font-awesome
-    nerdfonts
     morgen
     protonmail-bridge
-    home-manager
+
+    # Languages / Compilers / Package Managers
+    rustc
+    cargo
+    python3
+    julia
+    clang
+    stack
+    ghc
+
+    # Fonts
     font-manager
-    catppuccin
+    nerdfonts
+    font-awesome
+    iosevka
 
     # Theming
     gruvbox-gtk-theme
     gruvbox-plus-icons
+    catppuccin
+
+    # Window Manager
+    xmonad-with-packages
+    xmobar
+    eww
+    rofi
+    qtile
+
+    # Editors
+    emacs
+    vim
+    neovim
+    rstudio
   ];
 
   fonts.fonts = with pkgs; [
