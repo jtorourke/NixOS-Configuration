@@ -111,7 +111,9 @@
     enable = true;
     defaultEditor = true;
     # catppuccin.enable = true;
-    plugins = with pkgs.vimPlugins; [ gruvbox colorizer catppuccin-vim lightline-vim ];
+    plugins = with pkgs.vimPlugins; [ gruvbox colorizer catppuccin-vim
+    lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight
+    vim-nerdtree-tabs julia-vim python-mode python-syntax ];
     extraConfig = ''
       set nocompatible
       filetype off
@@ -258,6 +260,11 @@
       ];
 	  };
     };
+  };
+
+  programs.eww = {
+    enable = true;
+    configDir = ~/.config/eww/bar;
   };
 
 #  programs.starship = {
