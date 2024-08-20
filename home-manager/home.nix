@@ -1,9 +1,82 @@
 { config, pkgs, ... }:
 
+let
+  hyprlock = pkgs.hyprlock;
+in
 {
   home.username = "john";  # Replace with your actual username
   home.homeDirectory = "/home/john";  # Adjust the path if necessary
   home.stateVersion = "24.05";
+
+  programs.emacs = {
+    enable = true;
+    #extraPackages = pkgs: [
+    #  doom-emacs
+    #];
+  };
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+    package = pkgs.hyprland;
+    # nvidiaPatches = true;
+    xwayland.enable = true;
+    systemd.enable = true;
+    settings = {
+      
+      general = {
+        gaps_in = 10;
+        gaps_out = 10;
+        border_size = 1;
+      };
+
+      decoration = {
+        shadow_offset = "0 5";
+        "col.shadow" = "rgb(231,215,173)";
+      };
+
+      "$mod" = "SUPER";
+
+      bindm = [
+        # need to add here
+      ];
+    };
+    extraConfig = ''
+      # need to add more here
+    '';
+  };
+
+  programs.hyprlock = {
+    enable = true;
+    settings = {
+      general = {
+        disable_loading_bar = true;
+        grace = 300;
+        hide_cursor = false;
+        no_fade_in = false;
+      };
+      background = {
+        path
+        = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/sve.png";
+        blur_passes = 3;
+        blur_size = 8;
+      };
+      input-field = {
+        size = "200, 50";
+        position = "0, 0";
+        monitor = "";
+        dots_center = true;
+        dots_rounding = -2;
+        rounding = -1;
+        fade_on_empty = false;
+        font_color = "rgb(231, 215, 173)";
+        inner_color = "rgb(50, 73, 215)";
+        outer_color = "rgb(231, 40, 40)";
+        outline_thickness = 1;
+        placeholder_text = "'<span foreground='#e7d7ad'>FUCK</span>'";
+        shadow_passes = 0;
+      };
+    };
+  };
 
   programs.zsh = {
     enable = true;
@@ -115,6 +188,7 @@
     lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight
     vim-nerdtree-tabs julia-vim python-mode python-syntax ];
     extraConfig = ''
+      let mapleader = "\Space"
       set nocompatible
       filetype off
       syntax on
@@ -217,7 +291,7 @@
       colors = {
         primary = {
           background = "0x282828";
-          foreground = "0xebdbb2";
+          foreground = "0xe7d7ad";
         };
         normal = {
           black = "0x282828";
@@ -260,11 +334,6 @@
       ];
 	  };
     };
-  };
-
-  programs.eww = {
-    enable = true;
-    configDir = ~/.config/eww/bar;
   };
 
 #  programs.starship = {

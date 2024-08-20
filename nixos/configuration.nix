@@ -103,6 +103,9 @@
       background = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
     };
   };
+
+  programs.hyprland.enable = true;
+  programs.hyprlock.enable = true;
   services.xserver.desktopManager.budgie.enable = true;
 
   # Configure keymap in X11
@@ -132,7 +135,7 @@
 
   # Hardware config for Nvidia
   hardware.opengl = {
-	enable = true;
+    enable = true;
   };
 
   services.xserver.videoDrivers = ["nvidia"];
@@ -252,6 +255,11 @@
     eww
     rofi
     qtile
+    hyprland
+    hyprlock
+    waybar
+    rofi-wayland
+    rofi-rbw-wayland
 
     # Editors
     emacs
