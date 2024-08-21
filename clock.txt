@@ -1,0 +1,1 @@
+%h.%d.%Y / %X / Day %u, Week %V
