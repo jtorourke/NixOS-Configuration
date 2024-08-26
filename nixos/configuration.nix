@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
-      <catppuccin/modules/nixos>
     ];
 
   # Bootloader.
@@ -21,7 +20,7 @@
       efiSupport = true;
       device = "nodev";
       useOSProber = true;
-      splashImage = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
+      #splashImage = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
       #font = "${pkgs.iosevka}/share/fonts/Iosevka-Regular.ttf";
       extraConfig = ''
         GRUB_TIMEOUT=60
@@ -53,7 +52,7 @@
         # Specify the home-manager configuration file location
         imports = [
           /home/john/.config/home-manager/home.nix
-	  <catppuccin/modules/home-manager>
+   #       	 # <catppuccin/modules/home-manager>
  	];
       };
     };
@@ -96,17 +95,41 @@
   # Enable the Budgie Desktop environment.
   services.xserver.displayManager = {
     lightdm = {
-      enable = true;
-      greeters.slick.enable = true;
-      greeters.slick.theme.name = "Gruvbox-Dark";
-      greeters.slick.iconTheme.name = "Gruvbox-Plus-Dark";
-      background = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
+      enable = false;
+      #greeters.slick.enable = true;
+      #greeters.slick.theme.name = "Gruvbox-Dark";
+      #greeters.slick.iconTheme.name = "Gruvbox-Plus-Dark";
+      #background = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
     };
+    gdm.enable = true;
+    #defaultSession = "budgie-desktop";
   };
 
   programs.hyprland.enable = true;
   programs.hyprlock.enable = true;
-  services.xserver.desktopManager.budgie.enable = true;
+  #services.xserver.desktopManager.budgie.enable = false;
+
+  # Hyprland configuration
+  programs.hyprland = {
+    xwayland = {
+      enable = true;
+    };
+  };
+
+  services.dbus.enable = true;
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+    ];
+  };
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    #WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
 
   # Configure keymap in X11
   services.xserver = {
@@ -212,6 +235,7 @@
     screenfetch
     fastfetch
     alacritty
+    kitty
     zsh
     starship
     git
@@ -219,6 +243,8 @@
     ripgrep
     coreutils
     fd
+    htop
+    xfce.thunar
 
     # Misc. Programs
     spotify
@@ -228,6 +254,7 @@
     morgen
     protonmail-bridge
     marktext
+    bitwarden-desktop
 
     # Languages / Compilers / Package Managers
     rustc
@@ -260,6 +287,17 @@
     waybar
     rofi-wayland
     rofi-rbw-wayland
+    swww # for wallpapers
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-hyprland
+    xwayland
+    meson
+    wayland-protocols
+    wayland-utils
+    wl-clipboard
+    wlroots
+    ly
+    emptty
 
     # Editors
     emacs

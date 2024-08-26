@@ -2,6 +2,7 @@
 
 let
   hyprlock = pkgs.hyprlock;
+  inherit (pkgs) hyprland;
 in
 {
   home.username = "john";  # Replace with your actual username
@@ -20,28 +21,38 @@ in
     package = pkgs.hyprland;
     # nvidiaPatches = true;
     xwayland.enable = true;
-    systemd.enable = true;
+    systemd = {
+	enable = true;
+	variables = ["--all"];
+    };
     settings = {
       
       general = {
-        gaps_in = 10;
-        gaps_out = 10;
-        border_size = 1;
+        gaps_in = 5;
+        gaps_out = 15;
+        border_size = 3;
+        "col.active_border" = "rgb(b16286) rgb(d3869b) 45deg";
+        "col.inactive_border" = "rgb(d65d0e) rgb(d79921) 45deg";
+#        layout = dwindle;
       };
 
       decoration = {
-        shadow_offset = "0 5";
+        shadow_offset = "0 0";
         "col.shadow" = "rgb(231,215,173)";
       };
 
       "$mod" = "SUPER";
 
-      bindm = [
-        # need to add here
+      bind = [
+        "$mod, b, exec, firefox"
+        "$mod, t, exec, kitty"
+        "$mod, r, exec, rofi -show run"
+        "$mod, w, exec, wofi -show run"
       ];
     };
     extraConfig = ''
-      # need to add more here
+      $browser = firefox
+      $term = kitty
     '';
   };
 
@@ -78,6 +89,33 @@ in
     };
   };
 
+  programs.kitty = {
+    enable = true;
+    font = {
+      name = "IosevkaTerm Nerd Font Mono";
+      size = 12;
+    };
+    theme = "Gruvbox Material Dark Medium";
+    shellIntegration = {
+      enableZshIntegration = true;
+    };
+    keybindings = {
+      "ctrl+shift+v" = "paste_from_clipboard";
+      "ctrl+shift+c" = "copy_to_clipboard";
+      "shift+insert" = "paste_from_selection";
+      "ctrl+0" = "reset_font_size";
+      "ctrl+=" = "increase_font_size";
+      "ctrl++" = "increase_font_size";
+      "ctrl+-" = "decrease_font_size";
+      "shift+page_up" = "scroll_page_up";
+      "shift+page_down" = "scroll_page_down";
+      "shift+home" = "scroll_to_top";
+      "shift+end" = "scroll_to_bottom";
+      "ctrl+l" = "clear_scrollback";
+    };
+  };
+
+
   programs.zsh = {
     enable = true;
     #catppuccin.enable = true;
@@ -102,42 +140,42 @@ in
       export FUNCNEST=1000
 
       # Define a function to set KEYMAP if not defined
-  function zle-keymap-select {
-    local current_keymap={${KEYMAP:-main}:#*vicmd*}
-    if [[ -n $current_keymap || $1 == 'block' ]]; then
-      echo -ne '\e[1 q'
-    elif [[ -z $current_keymap || $1 == 'beam' ]]; then
-      echo -ne '\e[5 q'
-    fi
-  }
-
-  #type starship_zle-keymap-select >/dev/null || \
-  #{
-  #  echo "Load starship"
-  #  eval "$(/usr/local/bin/starship init zsh)"
-  #}
-
-  zle -N zle-keymap-select
-  zle-line-init() {
-    zle -K viins
-    echo -ne "\\e[5 q"
-  }
-  zle -N zle-line-init
-  echo -ne '\e[5 q'
-  preexec() { echo -ne '\e[5 q' ;}
-  lfcd () {
-    tmp="$(mktemp)"
-    lf -last-dir-path="$tmp" "$@"
-    if [ -f "$tmp" ]; then
-      dir="$(cat "$tmp")"
-      rm -f "$tmp"
-      if [ -d "$dir" ]; then
-        if [ "$dir" != "$(pwd)" ]; then
-          cd "$dir"
+      function zle-keymap-select {
+        local current_keymap={${KEYMAP:-main}:#*vicmd*}
+        if [[ -n $current_keymap || $1 == 'block' ]]; then
+          echo -ne '\e[1 q'
+        elif [[ -z $current_keymap || $1 == 'beam' ]]; then
+          echo -ne '\e[5 q'
         fi
-      fi
-    fi
-  }
+      }
+
+      #type starship_zle-keymap-select >/dev/null || \
+      #{
+      #  echo "Load starship"
+      #  eval "$(/usr/local/bin/starship init zsh)"
+      #}
+
+      zle -N zle-keymap-select
+      zle-line-init() {
+        zle -K viins
+        echo -ne "\\e[5 q"
+      }
+      zle -N zle-line-init
+      echo -ne '\e[5 q'
+      preexec() { echo -ne '\e[5 q' ;}
+      lfcd () {
+        tmp="$(mktemp)"
+        lf -last-dir-path="$tmp" "$@"
+        if [ -f "$tmp" ]; then
+          dir="$(cat "$tmp")"
+          rm -f "$tmp"
+          if [ -d "$dir" ]; then
+            if [ "$dir" != "$(pwd)" ]; then
+              cd "$dir"
+            fi
+          fi
+        fi
+      }
       bindkey -s '^o' 'lfcd\n'
       
       # Other aliases and settings
