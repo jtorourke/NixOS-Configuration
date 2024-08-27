@@ -22,18 +22,29 @@ in
     # nvidiaPatches = true;
     xwayland.enable = true;
     systemd = {
-	enable = true;
-	variables = ["--all"];
+      enable = true;
+      variables = ["--all"];
     };
     settings = {
-      
+      exec-once = [
+        "home-manager switch &"
+        "[workspace 1 silent] kitty &"
+        "hyprpaper"
+      ];
       general = {
         gaps_in = 5;
         gaps_out = 15;
         border_size = 3;
-        "col.active_border" = "rgb(b16286) rgb(d3869b) 45deg";
-        "col.inactive_border" = "rgb(d65d0e) rgb(d79921) 45deg";
+        "col.active_border" = "rgb(8ec07c) rgb(689d6a) 45deg";
+        "col.inactive_border" = "rgb(3c3836) rgb(32302f) 45deg";
 #        layout = dwindle;
+        border_part_of_window = false;
+        no_border_on_floating = false;
+      };
+
+      misc = {
+        disable_autoreload = true;
+        disable_hyprland_logo = true;
       };
 
       decoration = {
@@ -44,16 +55,51 @@ in
       "$mod" = "SUPER";
 
       bind = [
+        # Programs
         "$mod, b, exec, firefox"
         "$mod, t, exec, kitty"
-        "$mod, r, exec, rofi -show run"
-        "$mod, w, exec, wofi -show run"
+        "$mod, r, exec, rofi -show drun"
+
+        # Workspaces
+
+
+        # Window Focus
+
+
+        # Window Control
+
+
+        # Misc. Binds
+
       ];
     };
     extraConfig = ''
       $browser = firefox
       $term = kitty
     '';
+  };
+
+  programs.waybar = {
+    enable = true;
+#    settings.mainBar = {
+#    #  test
+#    };
+#    style = {
+#    #  test
+#    };
+  };
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      ipc = "on";
+      splash = false;
+      splash_offset = 2.0;
+      preload = [ "/home/john/Downloads/test.png" ];
+      wallpaper = [
+        ",/home/john/Downloads/test.png"
+      ];
+    };
   };
 
   programs.hyprlock = {
@@ -80,13 +126,16 @@ in
         rounding = -1;
         fade_on_empty = false;
         font_color = "rgb(231, 215, 173)";
-        inner_color = "rgb(50, 73, 215)";
+        inner_color = "rgb(50, 73, 173)";
         outer_color = "rgb(231, 40, 40)";
         outline_thickness = 1;
-        placeholder_text = "'<span foreground='#e7d7ad'>FUCK</span>'";
+        placeholder_text = "Enter Password";
         shadow_passes = 0;
       };
     };
+    extraConfig = ''
+      $foreground = rgb(50, 73, 173)
+    '';
   };
 
   programs.kitty = {

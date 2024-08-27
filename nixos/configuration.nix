@@ -14,23 +14,45 @@
   # Bootloader.
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
+  
   boot.loader = {
+    timeout = 60;
     grub = {
       enable = true;
       efiSupport = true;
       device = "nodev";
-      useOSProber = true;
+      #useOSProber = true;
       #splashImage = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
       #font = "${pkgs.iosevka}/share/fonts/Iosevka-Regular.ttf";
       extraConfig = ''
         GRUB_TIMEOUT=60
       '';
+      #extraEntries = ''
+       # menuentry "Windows" {
+        #  insmod part_gpt
+         # insmod fat
+          #insmod search_fs_uuid
+          #insmod chain
+         # search --fs-uuid --set=root $FS_UUID
+          #chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+        #}
+      #'';
     };
 
     #systemd-boot.enable = true;
     efi = {
       canTouchEfiVariables = true;
-      #efiSysMountPoint = "/dev/nvme0n1p1";
+      #efiSysMountPoint = "/boot/efi";
+    };
+  };
+  
+  systemd.user.services.home-manager-auto = {
+    enable = true;
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    description = "auto home-manager startup";
+    serviceConfig = {
+      ExecStart = ''home-manager switch'';
     };
   };
 
@@ -47,7 +69,7 @@
   home-manager = {
     useUserPackages = true;
     users = {
-      john = {
+	    john = {
 	home.stateVersion = "24.05";
         # Specify the home-manager configuration file location
         imports = [
@@ -89,20 +111,40 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  fileSystems."/home/john/bckp" =
+    {
+      device = "dev/disk/by-uuid/C07CC5D17CC5C280";
+      fsType = "ntfs";
+      options = [
+        "users"
+        "nofail"
+      ];
+    };
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the Budgie Desktop environment.
-  services.xserver.displayManager = {
-    lightdm = {
-      enable = false;
-      #greeters.slick.enable = true;
-      #greeters.slick.theme.name = "Gruvbox-Dark";
-      #greeters.slick.iconTheme.name = "Gruvbox-Plus-Dark";
-      #background = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
+ # Enable the Budgie Desktop environment.
+ # services.xserver.displayManager = {
+ #   lightdm = {
+ #     enable = false;
+ #     #greeters.slick.enable = true;
+ #     #greeters.slick.theme.name = "Gruvbox-Dark";
+ #     #greeters.slick.iconTheme.name = "Gruvbox-Plus-Dark";
+ #     #background = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
+ #   };
+ #   gdm.enable = true;
+ #   #defaultSession = "budgie-desktop";
+ # };
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --time-format '%I:%M %p | %a • %h | %F' --cmd Hyprland";
+        user = "greeter";
+      };
     };
-    gdm.enable = true;
-    #defaultSession = "budgie-desktop";
   };
 
   programs.hyprland.enable = true;
@@ -181,7 +223,7 @@
   users.users.john = {
     isNormalUser = true;
     description = "John";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "storage" ];
     packages = with pkgs; [
     emacs
     vim
@@ -244,7 +286,8 @@
     coreutils
     fd
     htop
-    xfce.thunar
+    pcmanfm
+    greetd.tuigreet
 
     # Misc. Programs
     spotify
@@ -255,6 +298,9 @@
     protonmail-bridge
     marktext
     bitwarden-desktop
+    superfile
+    vesktop
+    spaceFM
 
     # Languages / Compilers / Package Managers
     rustc
@@ -284,6 +330,7 @@
     qtile
     hyprland
     hyprlock
+    hyprpaper
     waybar
     rofi-wayland
     rofi-rbw-wayland
@@ -298,6 +345,10 @@
     wlroots
     ly
     emptty
+
+    # File System support
+    ntfs3g
+    btrfs-progs
 
     # Editors
     emacs
