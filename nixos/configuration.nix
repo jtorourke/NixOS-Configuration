@@ -14,7 +14,8 @@
   # Bootloader.
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
-  
+
+  boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
   boot.loader = {
     timeout = 60;
     grub = {
@@ -198,6 +199,9 @@
     #media-session.enable = true;
   };
 
+  services.blueman.enable = true;
+  hardware.bluetooth.enable = true;
+
   # Hardware config for Nvidia
   hardware.opengl = {
     enable = true;
@@ -288,6 +292,7 @@
     htop
     pcmanfm
     greetd.tuigreet
+    lazygit
 
     # Misc. Programs
     spotify
@@ -301,6 +306,7 @@
     superfile
     vesktop
     spaceFM
+    ladybird
 
     # Languages / Compilers / Package Managers
     rustc
@@ -345,6 +351,11 @@
     wlroots
     ly
     emptty
+    pavucontrol
+    blueman
+    bluez
+    bluez-tools
+    blueberry
 
     # File System support
     ntfs3g
