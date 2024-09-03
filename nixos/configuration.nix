@@ -293,6 +293,13 @@
     pcmanfm
     greetd.tuigreet
     lazygit
+    gnome.nautilus
+    grimblast
+    qview
+    mpv
+    audacious
+    wf-recorder
+    wl-clip-persist
 
     # Misc. Programs
     spotify
@@ -329,16 +336,15 @@
     catppuccin
 
     # Window Manager
-    xmonad-with-packages
-    xmobar
     eww
     rofi
-    qtile
     hyprland
     hyprlock
     hyprpaper
+    hyprpicker
     waybar
     rofi-wayland
+    rofi-power-menu
     rofi-rbw-wayland
     swww # for wallpapers
     xdg-desktop-portal-gtk

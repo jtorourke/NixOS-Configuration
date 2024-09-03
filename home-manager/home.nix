@@ -28,6 +28,10 @@ in
   home.username = "john";  # Replace with your actual username
   home.homeDirectory = "/home/john";  # Adjust the path if necessary
   home.stateVersion = "24.05";
+  home.sessionVariables = {
+    EDITOR = "vim";
+    GTK_THEME = "Gruvbox Material Dark Medium";
+  };
 
   programs.emacs = {
     enable = true;
@@ -101,6 +105,7 @@ in
         "$mainMod, t, exec, kitty"
         "$mainMod, r, exec, rofi -show drun"
         "$mainMod, l, exec, hyprlock"
+        "$mainMod ALT, l, exec, $power_menu"
 
         # Workspaces
         "$mainMod, 1, workspace, 1"
@@ -137,6 +142,8 @@ in
     extraConfig = ''
       $browser = firefox
       $term = kitty
+      $power_menu = rofi -show p -modi p:'rofi-power-menu'
+      $rofi = rofi -show drun
     '';
   };
 
@@ -169,7 +176,7 @@ in
       ];
       clock= {
           calendar = {
-            format = { today = "<span color='#98971A'><b>{}</b></span>"; };
+            format = { today = "<span color='#98971A'><b>{}</b></span>";};
           };
           format = "  {:%H:%M}";
           tooltip= "true";
@@ -460,11 +467,21 @@ in
     extraConfig = ''
     label {
       monitor = 
-      text = cmd[update:1000] echo "$(date +"%k:%M")"
+      text = $TIME
       color = rgba(235, 219, 178, .9)
-      font_size = 111
-      font_family = JetBrainsMono NF Bold
+      font_size = 120
+      font_family = IosevkaTerm Nerd Font Mono
       position = 0, 270
+      halign = center
+      valign = center
+    }
+    label {
+      monitor = 
+      text = cmd[update:1000] echo "- $(date +"%A, %B %d") -"
+      color = rgba(235, 219, 178, .9)
+      font_size = 20
+      font_family = IosevkaTerm Nerd Font Mono
+      position = 0, 150
       halign = center
       valign = center
     }
