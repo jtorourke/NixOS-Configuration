@@ -49,7 +49,7 @@
   
   systemd.user.services.home-manager-auto = {
     enable = true;
-    after = [ "network.target" ];
+    # after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     description = "auto home-manager startup";
     serviceConfig = {
@@ -232,7 +232,6 @@
     emacs
     vim
     neovim
-    rofi
     qtile
     julia
     ranger
@@ -290,10 +289,9 @@
     coreutils
     fd
     htop
-    pcmanfm
     greetd.tuigreet
     lazygit
-    gnome.nautilus
+    fm
     grimblast
     qview
     mpv
@@ -310,11 +308,8 @@
     protonmail-bridge
     marktext
     bitwarden-desktop
-    superfile
     vesktop
-    spaceFM
-    ladybird
-
+    
     # Languages / Compilers / Package Managers
     rustc
     cargo
@@ -337,7 +332,6 @@
 
     # Window Manager
     eww
-    rofi
     hyprland
     hyprlock
     hyprpaper
