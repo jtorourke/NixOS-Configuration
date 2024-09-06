@@ -33,6 +33,49 @@ in
     GTK_THEME = "Gruvbox Material Dark Medium";
   };
 
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  };
+
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Gruvbox-Dark";
+      package = pkgs.gruvbox-gtk-theme.override {
+        colorVariants = [ "dark" ];
+      };
+    };
+    font = {
+      name = "IosevkaTerm Nerd Font Mono";
+      size = 12;
+    };
+    iconTheme = {
+      name = "Gruvbox-Plus-Dark";
+      package = pkgs.gruvbox-plus-icons;
+    };
+    cursorTheme = {
+      name = "Gruvbox-Plus-Dark";
+      package = pkgs.gruvbox-plus-icons;
+    };
+    gtk2 = {
+      extraConfig = ''
+        gtk-application-prefer-dark-theme = 1
+      '';
+    };
+    gtk3 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+    };
+    gtk4 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+    };
+  };
+
   programs.emacs = {
     enable = true;
     #extraPackages = pkgs: [
@@ -82,7 +125,7 @@ in
         border_size = 3;
         "col.active_border" = "rgb(8ec07c) rgb(689d6a) 45deg";
         "col.inactive_border" = "rgb(3c3836) rgb(32302f) 45deg";
-#        layout = dwindle;
+        layout = "dwindle";
         border_part_of_window = false;
         no_border_on_floating = false;
       };
@@ -92,6 +135,22 @@ in
         disable_hyprland_logo = true;
       };
 
+      dwindle = {
+        no_gaps_when_only = true;
+        force_split = 0;
+        special_scale_factor = 1.0;
+        split_width_multiplier = 1.0;
+        use_active_for_splits = true;
+        pseudotile = "yes";
+        preserve_split = "yes";
+      };
+
+      master = {
+        new_status = "master";
+        special_scale_factor = 1;
+        no_gaps_when_only = false;
+      };
+
       decoration = {
         shadow_offset = "0 0";
         "col.shadow" = "rgb(231,215,173)";
@@ -99,13 +158,45 @@ in
 
       "$mainMod" = "SUPER";
 
+      animations = {
+        enabled = true;
+
+        bezier = [
+          "fluent_decel, 0, 0.2, 0.4, 1"
+          "easeOutCirc, 0, 0.55, 0.45, 1"
+          "easeOutCubic, 0.33, 1, 0.68, 1"
+          "easeinoutsine, 0.37, 0, 0.63, 1"
+        ];
+
+        animation = [
+          # Windows
+          "windowsIn, 1, 3, easeOutCubic, popin 30%" # window open
+          "windowsOut, 1, 3, fluent_decel, popin 70%" # window close.
+          "windowsMove, 1, 2, easeinoutsine, slide" # everything in between, moving, dragging, resizing.
+
+          # Fade
+          "fadeIn, 1, 3, easeOutCubic" # fade in (open) -> layers and windows
+          "fadeOut, 1, 2, easeOutCubic" # fade out (close) -> layers and windows
+          "fadeSwitch, 0, 1, easeOutCirc" # fade on changing activewindow and its opacity
+          "fadeShadow, 1, 10, easeOutCirc" # fade on changing activewindow for shadows
+          "fadeDim, 1, 4, fluent_decel" # the easing of the dimming of inactive windows
+          "border, 1, 2.7, easeOutCirc" # for animating the border's color switch speed
+          "borderangle, 1, 30, fluent_decel, once" # for animating the border's gradient angle - styles: once (default), loop
+          "workspaces, 1, 4, easeOutCubic, fade" # styles: slide, slidevert, fade, slidefade, slidefadevert
+        ];
+      };
+
       bind = [
         # Programs
         "$mainMod, b, exec, firefox"
         "$mainMod, t, exec, kitty"
         "$mainMod, r, exec, rofi -show drun"
         "$mainMod, l, exec, hyprlock"
-        "$mainMod ALT, l, exec, $power_menu"
+        "$mainMod, s, exec, spotify"
+        "$mainMod, v, exec, vesktop"
+        "$mainMod, p, exec, rofi -show p -modi p:'rofi-power-menu'"
+        "$mainMod, n, exec, fm"
+        "$mainMod, m, exec, morgen"
 
         # Workspaces
         "$mainMod, 1, workspace, 1"
@@ -136,7 +227,26 @@ in
         "$mainMod, Space, centerwindow,"
 
         # Misc. Binds
+        ## Screenshots
+        "$mainMod, g, exec, grimblast --notify --cursor --freeze save area ~/Pictures/$(date +'%m-%d-%Y-At-%Ih%Mm%Ss').png"
+        "$mainMod SHIFT, g, exec, grimblast --notify --cursor --freeze copy area"
 
+
+      ];
+
+      # windowrule
+      windowrule = [
+        "float,qView"
+        "center,qView"
+        "size 1200 725,qView"
+        "float,audacious"
+        "float,^(rofi)$"
+      ];
+
+      windowrulev2 = [
+        "float,class:^(rofi)$"
+        "float,title:^(rofi)$"
+        "float,class:^(pavucontrol)$"
       ];
     };
     extraConfig = ''
@@ -144,6 +254,7 @@ in
       $term = kitty
       $power_menu = rofi -show p -modi p:'rofi-power-menu'
       $rofi = rofi -show drun
+      $files = nautilus
     '';
   };
 
@@ -182,8 +293,7 @@ in
           tooltip= "true";
           tooltip-format= "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>";
           format-alt= "  {:%m/%d/%Y}";
-      };
-      "hyprland/workspaces"= {
+          "hyprland/workspaces"= {
           active-only= false;
           disable-scroll= true;
           format = "{icon}";
@@ -514,7 +624,6 @@ in
     };
   };
 
-
   programs.zsh = {
     enable = true;
     #catppuccin.enable = true;
@@ -681,184 +790,4 @@ in
       autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
     '';
   };
-
-  programs.alacritty = {
-    enable = true;
-    # catppuccin.enable = true;
-    settings = {
-      colors.draw_bold_text_with_bright_colors = true;
-      window = {
-        opacity = 1;
-        title = "Alacritty";
-        padding = {
-          x = 0;
-          y = 0;
-        };
-        class = {
-          instance = "Alacritty";
-          general = "Alacritty";
-        };
-      };
-      scrolling = {
-        history = 5000;
-      };
-      font = {
-        size = 12;
-        normal = {
-          family = "IosevkaTerm Nerd Font Mono";
-          style = "Regular";
-        };
-        bold = {
-          family = "IosevkaTerm Nerd Font Mono";
-          style = "Bold";
-        };
-        italic = {
-          family = "IosevkaTerm Nerd Font Mono";
-          style = "Italic";
-        };
-        bold_italic = {
-          family = "IosevkaTerm Nerd Font Mono";
-          style = "Bold Italic";
-        };
-        offset = {
-          x = 0;
-          y = 1;
-        };
-      };
-      colors = {
-        primary = {
-          background = "0x282828";
-          foreground = "0xe7d7ad";
-        };
-        normal = {
-          black = "0x282828";
-          red = "0xcc241d";
-          green = "0x98971a";
-          yellow = "0xd79921";
-          blue = "0x458588";
-          magenta = "0xb16286";
-          cyan = "0x689d6a";
-          white = "0xa89984";
-        };
-        bright = {
-          black = "0x928374";
-          red = "0xfb4934";
-          green = "0xb8bb26";
-          yellow = "0xfabd2f";
-          blue = "0x83a598";
-          magenta = "0xd3869b";
-          cyan = "0x8ec07c";
-          white = "0xebdbb2";
-        };
-      };
-      keyboard = {
-		bindings = [
-        { key = "V"; mods = "Control|Shift"; action = "Paste"; }
-        { key = "C"; mods = "Control|Shift"; action = "Copy"; }
-        { key = "Insert"; mods = "Shift"; action = "PasteSelection"; }
-        { key = "Key0"; mods = "Control"; action = "ResetFontSize"; }
-        { key = "Equals"; mods = "Control"; action = "IncreaseFontSize"; }
-        { key = "Plus"; mods = "Control"; action = "IncreaseFontSize"; }
-        { key = "Minus"; mods = "Control"; action = "DecreaseFontSize"; }
-        { key = "Paste"; action = "Paste"; }
-        { key = "Copy"; action = "Copy"; }
-        { key = "L"; mods = "Control"; action = "ClearLogNotice"; }
-        { key = "L"; mods = "Control"; chars = "\\f"; }
-        { key = "PageUp"; mods = "Shift"; action = "ScrollPageUp"; mode = "~Alt"; }
-        { key = "PageDown"; mods = "Shift"; action = "ScrollPageDown"; mode = "~Alt"; }
-        { key = "Home"; mods = "Shift"; action = "ScrollToTop"; mode = "~Alt"; }
-        { key = "End"; mods = "Shift"; action = "ScrollToBottom"; mode = "~Alt"; }
-      ];
-	  };
-    };
-  };
-
-#  programs.starship = {
-#    enable = true;
-#    enableZshIntegration = true;  # Adjust if using a different shell
-#    settings = {
-#      battery = {
-#        full_symbol = "🔋";
-#        charging_symbol = "🔌";
-#        discharging_symbol = "⚡";
-#        display = [
-#          {
-#            threshold = 30;
-#            style = "bold red";
-#          }
-#        ];
-#      };
-#
-#      character = {
-#        error_symbol = "[✖](bold red) ";
-#      };
-#
-#      cmd_duration = {
-#        min_time = 10000;  # Show command duration over 10,000 milliseconds (=10 sec)
-#        format = " took [$duration]($style)";
-#      };
-#
-#      directory = {
-#        truncation_length = 5;
-#        format = "[$path]($style)[$lock_symbol]($lock_style) ";
-#      };
-#
-#      git_branch = {
-#        format = " [$symbol$branch]($style) ";
-#        symbol = "🍣 ";
-#        style = "bold yellow";
-#      };
-#
-#      git_commit = {
-#        commit_hash_length = 8;
-#        style = "bold white";
-#      };
-#
-#      git_state = {
-#        #progress_divider = " of ";
-#      };
-#
-#      hostname = {
-#        ssh_only = false;
-#        format = "<[$hostname]($style)>";
-#        trim_at = "-";
-#        style = "bold 202";
-#        disabled = false;
-#      };
-#
-#      julia = {
-#        format = "[$symbol$version]($style) ";
-#        symbol = "ஃ ";
-#        style = "bold green";
-#      };
-#
-#      package = {
-#        disabled = true;
-#      };
-#
-#      python = {
-#        format = "[$symbol$version]($style) ";
-#        style = "bold green";
-#      };
-#
-#      rust = {
-#        format = "[$symbol$version]($style) ";
-#        style = "bold green";
-#      };
-#
-#      time = {
-#        time_format = "%T";
-#        format = "🕙 $time($style) ";
-#        style = "bright-white";
-#        disabled = false;
-#      };
-#
-#      username = {
-#        style_user = "bold 135";
-#        show_always = true;
-#      };
-#    };
-#  };
-#
-  # Add more programs and their configurations as needed
 }
