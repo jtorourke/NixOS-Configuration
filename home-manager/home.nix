@@ -23,6 +23,13 @@ let
       hyprlock_text = "rgb(251, 241, 199)";
       global_font = "IosevkaTerm Nerd Font Mono";
     };
+    doom-emacs = import ( pkgs.fetchFromGitHub {
+        owner = "doomemacs";
+        repo = "doomemacs";
+        rev = "5ad99220b86ae1bf421861dfad24492d768ac4d9";
+        hash = "sha256-MDYRRTPP5JlETi58REXECnA1ATF1MmU6givDRoyavrg=";
+      }
+    );
 in
 {
   home.username = "john";  # Replace with your actual username
@@ -32,6 +39,11 @@ in
     EDITOR = "vim";
     GTK_THEME = "Gruvbox Material Dark Medium";
   };
+
+#  programs.doom-emacs = {
+#   enable = true;
+#    doomDir = inputs.doom-config;  # or e.g. `./doom.d` for a local configuration 
+#  };
 
   dconf = {
     enable = true;
@@ -77,13 +89,6 @@ in
         gtk-application-prefer-dark-theme = 1;
       };
     };
-  };
-
-  programs.emacs = {
-    enable = true;
-    #extraPackages = pkgs: [
-    #  doom-emacs
-    #];
   };
 
   programs.git = {
@@ -726,8 +731,66 @@ in
   };
 
   programs.neovim = {
-    enable = false;
-    # Configure Neovim options here
+    enable = true;
+    plugins = with pkgs.vimPlugins; [ gruvbox colorizer catppuccin-vim
+    lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight
+    vim-nerdtree-tabs julia-vim python-mode python-syntax ];
+    extraConfig = ''
+      let mapleader = "\Space"
+      set nocompatible
+      filetype off
+      syntax on
+      filetype plugin indent on
+      set modelines=0
+      set wrap
+      nnoremap <F2> :set invpaste paste?<CR>
+      imap <F2> <C-O>:set invpaste paste?<CR>
+      set pastetoggle=<F2>
+      set textwidth=79
+      set formatoptions=tcqrn1
+      set tabstop=2
+      set shiftwidth=2
+      set softtabstop=2
+      set expandtab
+      set noshiftround
+      set scrolloff=5
+      set backspace=indent,eol,start
+      set ttyfast
+      set laststatus=2
+      set showmode
+      set showcmd
+      set matchpairs+=<:>
+      set list
+      set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
+      set number
+      set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ [BUFFER=%n]\ %{strftime('%c')}
+      set encoding=utf-8
+      set hlsearch
+      set incsearch
+      set ignorecase
+      set smartcase
+      set viminfo='100,<9999,s100
+      nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\\<Space>")<CR>
+      vnoremap <Space> zf
+      autocmd BufWinLeave *.* mkview
+      autocmd BufWinEnter *.* silent loadview"
+      map <F7> :w <CR> :!gcc % -o %< && ./%< <CR>
+      autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+      autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+      nnoremap tj   :tabnext<CR>
+      nnoremap tk   :tapprev<CR>
+      nnoremap td   :tabclose<CR>
+      nnoremap tn   :tabnew<CR>
+      set bg=dark
+      colorscheme gruvbox
+      let g:lightline = {
+        \ 'colorscheme': 'catppuccin_mocha',
+      \}
+      autocmd StdinReadPre * let s:std_in=1
+      autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+      nnoremap <F4> :NERDTreeToggle<CR>
+      autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    '';
   };
 
   programs.vim = {
@@ -736,7 +799,7 @@ in
     # catppuccin.enable = true;
     plugins = with pkgs.vimPlugins; [ gruvbox colorizer catppuccin-vim
     lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight
-    vim-nerdtree-tabs julia-vim python-mode python-syntax ];
+    vim-nerdtree-tabs julia-vim python-mode python-syntax orgmode ];
     extraConfig = ''
       let mapleader = "\Space"
       set nocompatible

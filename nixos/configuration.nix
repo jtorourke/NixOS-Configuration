@@ -4,12 +4,38 @@
 
 { config, pkgs, ... }:
 
+let
+  pythonPkgs = with pkgs.python311Packages; [
+    pandas
+    numpy
+    scipy
+    matplotlib
+    scikit-learn
+    ipykernel
+    ipython
+    jupyterlab
+    jupyter
+    conda
+    requests
+    beautifulsoup4
+  ];
+
+  rPkgs = with pkgs.rPackages; [
+    tidyverse
+    ggplot2
+    dplyr
+    shiny
+  ];
+
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
     ];
+
+  #nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Bootloader.
   #boot.loader.systemd-boot.enable = true;
@@ -22,9 +48,20 @@
       enable = true;
       efiSupport = true;
       device = "nodev";
-      #useOSProber = true;
+      useOSProber = true;
       #splashImage = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
-      #font = "${pkgs.iosevka}/share/fonts/Iosevka-Regular.ttf";
+      font = "${pkgs.iosevka}/share/fonts/truetype/Iosevka-Regular.ttf";
+      theme = pkgs.stdenv.mkDerivation {
+         pname = "distro-grub-themes";
+         version = "3.1";
+         src = pkgs.fetchFromGitHub {
+          owner = "AdisonCavani";
+          repo = "distro-grub-themes";
+          rev = "v3.1";
+          hash = "sha256-ZcoGbbOMDDwjLhsvs77C7G7vINQnprdfI37a9ccrmPs=";
+        };
+        installPhase = "cp -r customize/nixos $out";
+      };
       extraConfig = ''
         GRUB_TIMEOUT=60
       '';
@@ -290,6 +327,7 @@
     fd
     htop
     greetd.tuigreet
+    greetd.wlgreet
     lazygit
     fm
     grimblast
@@ -298,6 +336,8 @@
     audacious
     wf-recorder
     wl-clip-persist
+    sleek-grub-theme
+    spacevim
 
     # Misc. Programs
     spotify
@@ -313,11 +353,13 @@
     # Languages / Compilers / Package Managers
     rustc
     cargo
-    python3
     julia
     clang
     stack
     ghc
+
+    ## Python 3.12
+    python3
 
     # Fonts
     font-manager
@@ -366,7 +408,7 @@
     vim
     neovim
     rstudio
-  ];
+  ] ++ pythonPkgs ++ rPkgs;
 
   fonts.fonts = with pkgs; [
     iosevka
