@@ -12,9 +12,15 @@ let
     matplotlib
     scikit-learn
     ipykernel
+    ipython-genutils
     ipython
+    jupyterlab-widgets
+    jupyterlab-server
     jupyterlab
+    jupyter-core
     jupyter
+    calysto
+    nbformat
     conda
     requests
     beautifulsoup4
@@ -117,7 +123,9 @@ in
       };
     };
   };
-  
+
+  services.hypridle.enable = true;
+
   #catppuccin.enable = true;
   #catppuccin.flavor = "mocha";
 
@@ -349,7 +357,10 @@ in
     marktext
     bitwarden-desktop
     vesktop
-    
+    obs-studio
+    obs-studio-plugins.wlrobs
+
+
     # Languages / Compilers / Package Managers
     rustc
     cargo
@@ -378,6 +389,7 @@ in
     hyprlock
     hyprpaper
     hyprpicker
+    hypridle
     waybar
     rofi-wayland
     rofi-power-menu
@@ -408,6 +420,7 @@ in
     vim
     neovim
     rstudio
+    jetbrains.dataspell
   ] ++ pythonPkgs ++ rPkgs;
 
   fonts.fonts = with pkgs; [

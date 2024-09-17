@@ -106,6 +106,10 @@ in
     enable = true;
   };
 
+#  services.hypridle = {
+#    enable = true;
+#  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs.hyprland;
@@ -120,7 +124,11 @@ in
       exec-once = [
         "home-manager switch &"
         "[workspace 1 silent] kitty &"
+        "[workspace 1 silent] firefox &"
+        "nix-shell /etc/nixos/jupyter.nix &"
         "waybar &"
+        "hyprlock &"
+        "hypridle &"
         "hyprpaper &"
         "nm-applet"
       ];
@@ -233,22 +241,47 @@ in
         "$mainMod SHIFT, F, fullscreen, 1"
         "$mainMod, Space, togglefloating,"
         "$mainMod, Space, centerwindow,"
+        "$mainMod SHIFT, left, movewindow, l"
+        "$mainMod SHIFT, right, movewindow, r"
+        "$mainMod SHIFT, up, movewindow, u"
+        "$mainMod SHIFT, down, movewindow, d"
+        "$mainMod CTRL, left, resizeactive, -80 0"
+        "$mainMod CTRL, right, resizeactive, 80 0"
+        "$mainMod CTRL, up, resizeactive, 0 -80"
+        "$mainMod CTRL, down, resizeactive, 0 80"
+        "$mainMod ALT, left, moveactive,  -80 0"
+        "$mainMod ALT, right, moveactive, 80 0"
+        "$mainMod ALT, up, moveactive, 0 -80"
+        "$mainMod ALT, down, moveactive, 0 80"
 
         # Misc. Binds
         ## Screenshots
         "$mainMod, g, exec, grimblast --notify --cursor --freeze save area ~/Pictures/$(date +'%m-%d-%Y-At-%Ih%Mm%Ss').png"
         "$mainMod SHIFT, g, exec, grimblast --notify --cursor --freeze copy area"
 
-
+        ## Layout Swapping
+        "$mainMod, w, exec, kitty --hold sh $HOME/.config/home-manager/scripts/dwindle_layout.sh"
+        "$mainMod SHIFT, w, exec, kitty --hold sh $HOME/.config/home-manager/scripts/master_layout.sh"
+      ];
+      
+      bindm = [
+        "$mainMod, mouse:272, movewindow"
+        "$mainMod, mouse:273, resizewindow"
       ];
 
       # windowrule
       windowrule = [
         "float,qView"
         "center,qView"
-        "size 1200 725,qView"
+        "size 1200 800,qView"
         "float,audacious"
+        "center,audacious"
+        "size 1200 800,audacious"
+        "float,pavucontrol"
+        "center,pavucontrol"
+        "size 1200 800,pavucontrol"
         "float,^(rofi)$"
+        "workspace 5,obs"
       ];
 
       windowrulev2 = [
