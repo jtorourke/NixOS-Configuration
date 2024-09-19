@@ -175,6 +175,8 @@ in
         new_status = "master";
         special_scale_factor = 1;
         no_gaps_when_only = false;
+        always_center_master = true;
+        orientation = "center";
       };
 
       decoration = {
