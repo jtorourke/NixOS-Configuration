@@ -3,6 +3,8 @@
 let
   hyprlock = pkgs.hyprlock;
   inherit (pkgs) hyprland;
+  master_layout = pkgs.writeShellScriptBin "master_layout" (builtins.readFile ./scripts/master_layout.sh);
+  dwindle_layout = pkgs.writeShellScriptBin "dwindle_layout" (builtins.readFile ./scripts/dwindle_layout.sh);
   custom = {
       font = "IosevkaTerm Nerd Font Mono";
       font_size = "18px";
@@ -125,6 +127,9 @@ in
         "home-manager switch &"
         "[workspace 1 silent] kitty &"
         "[workspace 1 silent] firefox &"
+        "[workspace 5 silent] obs &"
+        "[workspace 4 silent] vesktop &"
+        "[workspace 4 silent] spotify &"
         "nix-shell /etc/nixos/jupyter.nix &"
         "waybar &"
         "hyprlock &"
@@ -260,8 +265,8 @@ in
         "$mainMod SHIFT, g, exec, grimblast --notify --cursor --freeze copy area"
 
         ## Layout Swapping
-        "$mainMod, w, exec, kitty --hold sh $HOME/.config/home-manager/scripts/dwindle_layout.sh"
-        "$mainMod SHIFT, w, exec, kitty --hold sh $HOME/.config/home-manager/scripts/master_layout.sh"
+        "$mainMod SHIFT, w, exec, dwindle_layout"
+        "$mainMod CTRL, w, exec, master_layout"
       ];
       
       bindm = [
@@ -546,9 +551,9 @@ in
       splash = false;
       splash_offset = 2.0;
       preload
-      = [ "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png" ];
+      = [ "/home/john/Pictures/gruvbox-wallpapers/wallpapers/anime/ign-waifu.png" ];
       wallpaper = [
-        ",/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png"
+        ",/home/john/Pictures/gruvbox-wallpapers/wallpapers/anime/ign-waifu.png"
       ];
     };
   };
@@ -568,7 +573,7 @@ in
       # Background and Shading
       background = {
         path
-        = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/haz-mat.png";
+        = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/anime/ign-waifu.png";
         blur_passes = 1;
         blur_size = 8;
         contrast = 0.85;
