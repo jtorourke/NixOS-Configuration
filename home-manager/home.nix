@@ -41,6 +41,11 @@ in
     EDITOR = "vim";
     GTK_THEME = "Gruvbox Material Dark Medium";
   };
+  home.packages = with pkgs; [
+    dwindle_layout
+    master_layout
+    rofi-wayland
+  ];
 
 #  programs.doom-emacs = {
 #   enable = true;
@@ -895,9 +900,6 @@ in
       autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
     '';
   };
-
-  home.packages = (with pkgs; [ rofi-wayland ]);
-
   xdg.configFile."rofi/theme.rasi".text = ''
     * {
       bg-col: #1D2021;
