@@ -26,6 +26,14 @@ let
     beautifulsoup4
   ];
 
+  haskellPkgs = with pkgs.haskellPackages; [
+    #ihaskell_0_11_0_0
+    #ipynb
+    #jupyter
+    #mltool
+    #Frames
+  ];
+
   rPkgs = with pkgs.rPackages; [
     tidyverse
     ggplot2
@@ -42,6 +50,7 @@ let
     xgboost
     randomForest
     tidytable
+    remotes
   ];
 
 in
@@ -437,7 +446,7 @@ in
     neovim
     rstudio
     jetbrains.dataspell
-  ] ++ pythonPkgs ++ rPkgs;
+  ] ++ pythonPkgs ++ rPkgs ++ haskellPkgs;
 
   fonts.fonts = with pkgs; [
     iosevka

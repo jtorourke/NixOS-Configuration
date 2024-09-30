@@ -21,6 +21,13 @@ mkShell {
       scipy
     ]))
 
+#    (haskell.override {
+#      packages = with haskellPackages; [
+#        ihaskell_0_11_0_0
+#        ipynb
+#      ];
+#    })
+
     (rWrapper.override {
       packages = with rPackages; [
         tidyverse
@@ -46,7 +53,8 @@ mkShell {
 
   # Automatically run jupyter when entering the shell.
   shellHook = ''
-    R --vanilla -e 'IRkernel::installspec(user = TRUE)'
+    R --vanilla -e 'IRkernel::installspec(user = FALSE)'
+    R --slave -e 'IRkernel::main()'
     julia -e 'import Pkg; Pkg.add("IJulia")'
     julia -e 'using IJulia; IJulia.installkernel("Julia")'
     jupyter lab

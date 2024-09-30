@@ -133,7 +133,7 @@ in
         "[workspace 1 silent] kitty &"
         "[workspace 1 silent] firefox &"
         "[workspace 4 silent] vesktop &"
-        "[workspace 4 silent] spotify &"
+        #"[workspace 4 silent] spotify &"
         "[workspace 5 silent] obs &"
         "nix-shell /etc/nixos/jupyter.nix &"
         "waybar &"
@@ -779,7 +779,7 @@ in
 
   programs.neovim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [ gruvbox-nvim colorizer obsidian-nvim catppuccin-vim
+    plugins = with pkgs.vimPlugins; [ nvchad nvchad-ui gruvbox-nvim colorizer obsidian-nvim catppuccin-vim
     lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight
     vim-nerdtree-tabs julia-vim python-mode python-syntax ];
     extraConfig = ''
