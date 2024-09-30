@@ -12,8 +12,6 @@ mkShell {
       ipython-genutils
       calysto
       nbformat
-
-      # Uncomment the following lines to make them available in the shell.
       numpy
       matplotlib
       scikitimage
@@ -22,8 +20,35 @@ mkShell {
       pandas
       scipy
     ]))
+
+    (rWrapper.override {
+      packages = with rPackages; [
+        tidyverse
+        tidyr
+        tidyquant
+        tidytable
+        ggplot2
+        dplyr
+        IRkernel
+        shiny
+        caret
+        plotly
+        e1071
+        knitr
+        XML
+        xgboost
+        randomForest
+      ];
+    })
+
+    julia
   ];
 
   # Automatically run jupyter when entering the shell.
-  shellHook = "jupyter lab";
+  shellHook = ''
+    R --vanilla -e 'IRkernel::installspec(user = TRUE)'
+    julia -e 'import Pkg; Pkg.add("IJulia")'
+    julia -e 'using IJulia; IJulia.installkernel("Julia")'
+    jupyter lab
+  '';
 }

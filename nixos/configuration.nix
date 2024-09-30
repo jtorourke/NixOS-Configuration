@@ -31,6 +31,17 @@ let
     ggplot2
     dplyr
     shiny
+    IRkernel
+    tidyr
+    caret
+    tidyquant
+    plotly
+    e1071
+    knitr
+    XML
+    xgboost
+    randomForest
+    tidytable
   ];
 
 in
@@ -307,9 +318,13 @@ in
 
   # Install firefox.
   programs.firefox.enable = true;
+  services.emacs.package = pkgs.emacs-unstable;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball https://github.com/nix-community/emacs-overlay/archive/master.tar.gz))
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -359,7 +374,8 @@ in
     vesktop
     obs-studio
     obs-studio-plugins.wlrobs
-
+    floorp
+    gnome.nautilus
 
     # Languages / Compilers / Package Managers
     rustc

@@ -132,9 +132,9 @@ in
         "home-manager switch &"
         "[workspace 1 silent] kitty &"
         "[workspace 1 silent] firefox &"
-        "[workspace 5 silent] obs &"
         "[workspace 4 silent] vesktop &"
         "[workspace 4 silent] spotify &"
+        "[workspace 5 silent] obs &"
         "nix-shell /etc/nixos/jupyter.nix &"
         "waybar &"
         "hyprlock &"
@@ -294,6 +294,8 @@ in
         "size 1200 800,pavucontrol"
         "float,^(rofi)$"
         "workspace 5,obs"
+        "workspace 4, spotify"
+        "workspace 4, vesktop"
       ];
 
       windowrulev2 = [
@@ -777,7 +779,7 @@ in
 
   programs.neovim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [ gruvbox colorizer catppuccin-vim
+    plugins = with pkgs.vimPlugins; [ gruvbox-nvim colorizer obsidian-nvim catppuccin-vim
     lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight
     vim-nerdtree-tabs julia-vim python-mode python-syntax ];
     extraConfig = ''
@@ -842,9 +844,7 @@ in
     enable = true;
     defaultEditor = true;
     # catppuccin.enable = true;
-    plugins = with pkgs.vimPlugins; [ gruvbox colorizer catppuccin-vim
-    lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight
-    vim-nerdtree-tabs julia-vim python-mode python-syntax orgmode ];
+    plugins = with pkgs.vimPlugins; [ gruvbox tabular vim-markdown colorizer catppuccin-vim lightline-vim vimwiki vim-orgmode nerdtree vim-nerdtree-syntax-highlight vim-nerdtree-tabs julia-vim python-mode python-syntax orgmode ];
     extraConfig = ''
       let mapleader = "\Space"
       set nocompatible
