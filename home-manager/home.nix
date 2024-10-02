@@ -39,6 +39,7 @@ in
   home.stateVersion = "24.05";
   home.sessionVariables = {
     EDITOR = "vim";
+    BROWSER = "floorp";
     GTK_THEME = "Gruvbox Material Dark Medium";
   };
   home.packages = with pkgs; [
@@ -46,6 +47,12 @@ in
     master_layout
     rofi-wayland
   ];
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.gnome.adwaita-icon-theme;
+    name = "Adwaita";
+    size = 16;
+  };
 
 #  programs.doom-emacs = {
 #   enable = true;
@@ -131,7 +138,7 @@ in
       exec-once = [
         "home-manager switch &"
         "[workspace 1 silent] kitty &"
-        "[workspace 1 silent] firefox &"
+        "[workspace 1 silent] floorp &"
         "[workspace 4 silent] vesktop &"
         #"[workspace 4 silent] spotify &"
         "[workspace 5 silent] obs &"
@@ -216,14 +223,14 @@ in
 
       bind = [
         # Programs
-        "$mainMod, b, exec, firefox"
+        "$mainMod, b, exec, floorp"
         "$mainMod, t, exec, kitty"
         "$mainMod, r, exec, rofi -show drun"
         "$mainMod, l, exec, hyprlock"
         "$mainMod, s, exec, spotify"
         "$mainMod, v, exec, vesktop"
         "$mainMod, p, exec, rofi -show p -modi p:'rofi-power-menu'"
-        "$mainMod, n, exec, fm"
+        "$mainMod, n, exec, nautilus"
         "$mainMod, m, exec, morgen"
 
         # Workspaces
@@ -422,7 +429,7 @@ in
       "custom/launcher"= {
           format= "";
           on-click= "rofi -show drun";
-          on-click-right= "wallpaper-picker";
+          on-click-right= "hyprpicker -a --format=hex";
           tooltip= "false";
       };
       "custom/notification" = {

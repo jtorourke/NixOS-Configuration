@@ -179,7 +179,8 @@ in
 
   fileSystems."/home/john/bckp" =
     {
-      device = "dev/disk/by-uuid/C07CC5D17CC5C280";
+      #device = "dev/disk/by-uuid/C07CC5D17CC5C280";
+      device = "dev/sda1";
       fsType = "ntfs";
       options = [
         "users"
@@ -326,7 +327,7 @@ in
   };
 
   # Install firefox.
-  programs.firefox.enable = true;
+  #programs.firefox.enable = true;
   services.emacs.package = pkgs.emacs-unstable;
 
   # Allow unfree packages
@@ -393,6 +394,7 @@ in
     clang
     stack
     ghc
+    R
 
     ## Python 3.12
     python3
@@ -406,6 +408,7 @@ in
     # Theming
     gruvbox-gtk-theme
     gruvbox-plus-icons
+    capitaine-cursors-themed
     catppuccin
 
     # Window Manager
