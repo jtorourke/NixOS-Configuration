@@ -385,6 +385,7 @@ in
     obs-studio
     obs-studio-plugins.wlrobs
     floorp
+    starship
     gnome.nautilus
 
     # Languages / Compilers / Package Managers
@@ -395,8 +396,6 @@ in
     stack
     ghc
     R
-
-    ## Python 3.12
     python3
 
     # Fonts

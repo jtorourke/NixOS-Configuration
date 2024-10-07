@@ -1,4 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+with lib;
 
 let
   hyprlock = pkgs.hyprlock;
@@ -39,7 +41,7 @@ in
   home.stateVersion = "24.05";
   home.sessionVariables = {
     EDITOR = "vim";
-    BROWSER = "floorp";
+    #BROWSER = "floorp";
     GTK_THEME = "Gruvbox Material Dark Medium";
   };
   home.packages = with pkgs; [
@@ -65,6 +67,14 @@ in
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
       };
+    };
+  };
+
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      emoji = [ "FiraCode Nerd Font" ];
+      monospace = [ "IosevkaTerm Nerd Font Mono" ];
     };
   };
 
@@ -687,6 +697,12 @@ in
     };
   };
 
+  programs.starship = with custom; {
+    enable = false;
+    #enableZshIntegration = false;
+    #settings = pkgs.lib.importTOML ../starship.toml;
+  };
+
   programs.zsh = {
     enable = true;
     #catppuccin.enable = true;
@@ -757,8 +773,9 @@ in
       # source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
       ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
       ZSH_HIGHLIGHT_PATTERNS=('rm -rf *' 'fg=white,bold,bg=red')
-      alias nixb="sudo nixos-rebuild switch"
-      alias homeb="home-manager switch"
+      alias nb="sudo nixos-rebuild switch"
+      alias ngc="sudo nix-collect-garbage -d 7d"
+      alias hb="home-manager switch"
       alias cdd="cd .."
       alias rm="rm -i"
       alias mv="mv -i"
@@ -773,11 +790,11 @@ in
       alias crone="crontab -e"
       alias cronl="crontab -l"
       alias doom="~/.emacs.d/bin/doom"
-      alias homeconf="vim .config/home-manager/home.nix"
-      alias nixconf="sudo vim /etc/nixos/configuration.nix"
+      alias hc="vim .config/home-manager/home.nix"
+      alias nc="sudo vim /etc/nixos/configuration.nix"
 	
       # Initialize Starship prompt
-      # eval "$(starship init zsh)"
+      #eval "$(starship init zsh)"
       
       # Add local binaries to PATH
       PATH="$HOME/.local/bin:$PATH"
@@ -837,9 +854,8 @@ in
       nnoremap tn   :tabnew<CR>
       set bg=dark
       colorscheme gruvbox
-      let g:lightline = {
-        \ 'colorscheme': 'catppuccin_mocha',
-      \}
+      let g:lightline = {}
+      let g:lightline.colorscheme = 'gruvbox'
       autocmd StdinReadPre * let s:std_in=1
       autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
       nnoremap <F4> :NERDTreeToggle<CR>

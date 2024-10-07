@@ -52,8 +52,8 @@ mkShell {
   ];
 
   # Automatically run jupyter when entering the shell.
+  # sudo R --vanilla -e 'IRkernel::installspec()'
   shellHook = ''
-    sudo R --vanilla -e 'IRkernel::installspec()'
     julia -e 'import Pkg; Pkg.add("IJulia")'
     julia -e 'using IJulia; IJulia.installkernel("Julia")'
     jupyter lab
