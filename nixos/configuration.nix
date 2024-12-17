@@ -21,7 +21,7 @@ let
     jupyter
     calysto
     nbformat
-    conda
+    #conda
     requests
     beautifulsoup4
   ];
@@ -109,6 +109,17 @@ in
       #efiSysMountPoint = "/boot/efi";
     };
   };
+
+  boot.binfmt.registrations.appimage = {
+    wrapInterpreterInShell = false;
+    interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+    recognitionType = "magic";
+    offset = 0;
+    mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+    magicOrExtension = ''\x7fELF....AI\x02'';
+  };
+
+  programs.appimage.binfmt = true;
   
   systemd.user.services.home-manager-auto = {
     enable = true;
@@ -137,7 +148,7 @@ in
     useUserPackages = true;
     users = {
         john = {
-          home.stateVersion = "24.05";
+          home.stateVersion = "24.11";
         # Specify the home-manager configuration file location
           imports = [
             /home/john/.config/home-manager/home.nix
@@ -301,7 +312,7 @@ in
     emacs
     vim
     neovim
-    qtile
+    #qtile
     julia
     ranger
     nnn
@@ -354,6 +365,7 @@ in
     fastfetch
     alacritty
     kitty
+    pandoc
     zsh
     starship
     git
@@ -374,6 +386,8 @@ in
     wl-clip-persist
     sleek-grub-theme
     spacevim
+    appimage-run
+    zmkBATx
 
     # Misc. Programs
     spotify
@@ -387,9 +401,14 @@ in
     vesktop
     obs-studio
     obs-studio-plugins.wlrobs
+    #brave
     floorp
+    #vivaldi
+    #vivaldi-ffmpeg-codecs
     starship
-    gnome.nautilus
+    nautilus
+    git-credential-oauth
+    ispell
 
     # Languages / Compilers / Package Managers
     rustc
@@ -484,6 +503,6 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
 }

@@ -38,7 +38,7 @@ in
 {
   home.username = "john";  # Replace with your actual username
   home.homeDirectory = "/home/john";  # Adjust the path if necessary
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
   home.sessionVariables = {
     EDITOR = "vim";
     #BROWSER = "floorp";
@@ -149,6 +149,7 @@ in
         "home-manager switch &"
         "[workspace 1 silent] kitty &"
         "[workspace 1 silent] floorp &"
+	"[workspace 2 silent] emacs &"
         "[workspace 4 silent] vesktop &"
         #"[workspace 4 silent] spotify &"
         "[workspace 5 silent] obs &"
@@ -179,7 +180,7 @@ in
       };
 
       dwindle = {
-        no_gaps_when_only = true;
+        #no_gaps_when_only = true;
         force_split = 0;
         special_scale_factor = 1.0;
         split_width_multiplier = 1.0;
@@ -191,14 +192,16 @@ in
       master = {
         new_status = "master";
         special_scale_factor = 1;
-        no_gaps_when_only = false;
+        #no_gaps_when_only = false;
         always_center_master = true;
         orientation = "center";
       };
 
       decoration = {
-        shadow_offset = "0 0";
-        "col.shadow" = "rgb(231,215,173)";
+        shadow = {
+          offset = "0 0";
+          color = "rgb(231,215,173)";
+        };
       };
 
       "$mainMod" = "SUPER";
@@ -242,6 +245,7 @@ in
         "$mainMod, p, exec, rofi -show p -modi p:'rofi-power-menu'"
         "$mainMod, n, exec, nautilus"
         "$mainMod, m, exec, morgen"
+        "$mainMod, e, exec, emacs"
 
         # Workspaces
         "$mainMod, 1, workspace, 1"
@@ -327,6 +331,7 @@ in
       $power_menu = rofi -show p -modi p:'rofi-power-menu'
       $rofi = rofi -show drun
       $files = nautilus
+      monitor = DP-2, 3440x1440@165, 0x0, 1
     '';
   };
 
@@ -362,6 +367,7 @@ in
             format = { today = "<span color='#98971A'><b>{}</b></span>";};
           };
           format = "  {:%H:%M}";
+          icon-size = 20;
           tooltip= "true";
           tooltip-format= "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>";
           format-alt= "  {:%m/%d/%Y}";
@@ -391,16 +397,19 @@ in
           format= "󰟜 {}%";
           format-alt= "󰟜 {used} GiB"; # 
           interval= 2;
+          icon-size = 16;
       };
       cpu= {
           format= "  {usage}%";
           format-alt= "  {avg_frequency} GHz";
           interval= 2;
-      };
+          icon-size = 16;
+        };
       disk = {
           # path = "/";
           format = "󰋊 {percentage_used}%";
           interval= 60;
+          icon-size = 16;
       };
       network = {
           format-wifi = "  {signalStrength}%";
@@ -408,19 +417,21 @@ in
           tooltip-format = "Connected to {essid} {ifname} via {gwaddr}";
           format-linked = "{ifname} (No IP)";
           format-disconnected = "󰖪 ";
+          icon-size = 16;
       };
       tray= {
           icon-size= 20;
           spacing= 8;
       };
-      pulseaudio= {
-          format= "{icon} {volume}%";
-          format-muted= "  {volume}%";
-          format-icons= {
-              default= [" "];
+      pulseaudio = {
+          format = "{icon} {volume}%";
+          format-muted = "  {volume}%";
+          format-icons = {
+              default = [" "];
           };
-          scroll-step= 5;
-          on-click= "pavucontrol";
+          scroll-step = 5;
+          icon-size = 16;
+          on-click = "pavucontrol";
       };
       battery = {
           format = "{icon} {capacity}%";
@@ -435,9 +446,11 @@ in
           format-time = "{H}h{M}m";
           tooltip = true;
           tooltip-format = "{time}";
+          icon-size = 16;
       };
       "custom/launcher"= {
           format= "";
+          icon-size = 16;
           on-click= "rofi -show drun";
           on-click-right= "hyprpicker -a --format=hex";
           tooltip= "false";
@@ -789,7 +802,7 @@ in
       alias ll="ls -al"
       alias crone="crontab -e"
       alias cronl="crontab -l"
-      alias doom="~/.emacs.d/bin/doom"
+      alias doom="~/.config/emacs/bin/doom"
       alias hc="vim .config/home-manager/home.nix"
       alias nc="sudo vim /etc/nixos/configuration.nix"
 	
