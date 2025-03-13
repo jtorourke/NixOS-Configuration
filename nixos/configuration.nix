@@ -134,6 +134,10 @@ in
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-32.3.3"
+  ];
+
   programs = {
     zsh = {
       enable = true;
@@ -191,16 +195,15 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  fileSystems."/home/john/bckp" =
-    {
-      #device = "dev/disk/by-uuid/C07CC5D17CC5C280";
-      device = "dev/sda1";
-      fsType = "ntfs";
-      options = [
+  fileSystems."/home/john/bckp" = {
+    #device = "dev/disk/by-uuid/C07CC5D17CC5C280";
+    device = "dev/sda1";
+    fsType = "ntfs";
+    options = [
         "users"
         "nofail"
-      ];
-    };
+    ];
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -343,6 +346,8 @@ in
   # Install firefox.
   #programs.firefox.enable = true;
   services.emacs.package = pkgs.emacs-unstable;
+  services.flatpak.enable = true;
+  services.udisks2.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -385,9 +390,11 @@ in
     wf-recorder
     wl-clip-persist
     sleek-grub-theme
-    spacevim
+    #spacevim
     appimage-run
-    zmkBATx
+    #zmkBATx
+    simpleBluez
+    #qt6
 
     # Misc. Programs
     spotify
@@ -402,13 +409,16 @@ in
     obs-studio
     obs-studio-plugins.wlrobs
     #brave
-    floorp
+    #floorp
     #vivaldi
     #vivaldi-ffmpeg-codecs
     starship
     nautilus
     git-credential-oauth
     ispell
+    flatpak
+    udisks
+    udiskie
 
     # Languages / Compilers / Package Managers
     rustc
@@ -489,7 +499,7 @@ in
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
