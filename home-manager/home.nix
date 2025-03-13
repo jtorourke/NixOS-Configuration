@@ -148,12 +148,13 @@ in
       exec-once = [
         "home-manager switch &"
         "[workspace 1 silent] kitty &"
-        "[workspace 1 silent] floorp &"
-	"[workspace 2 silent] emacs &"
+        "[workspace 1 silent] app.zen_browser.zen &"
+        "[workspace 2 silent] emacs &"
         "[workspace 4 silent] vesktop &"
         #"[workspace 4 silent] spotify &"
         "[workspace 5 silent] obs &"
         "nix-shell /etc/nixos/jupyter.nix &"
+        "udiskie &"
         "waybar &"
         "hyprlock &"
         "hypridle &"
@@ -236,7 +237,7 @@ in
 
       bind = [
         # Programs
-        "$mainMod, b, exec, floorp"
+        "$mainMod, b, exec, app.zen_browser.zen"
         "$mainMod, t, exec, kitty"
         "$mainMod, r, exec, rofi -show drun"
         "$mainMod, l, exec, hyprlock"
