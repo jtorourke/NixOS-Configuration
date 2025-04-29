@@ -613,9 +613,9 @@ in
       splash = false;
       splash_offset = 2.0;
       preload
-      = [ "/home/john/Pictures/gruvbox-wallpapers/wallpapers/anime/ign-waifu.png" ];
+      = [ "/home/john/wallpapers/gruvbox-wallpapers/wallpapers/minimalistic/gruv-mistakes.png" ];
       wallpaper = [
-        ",/home/john/Pictures/gruvbox-wallpapers/wallpapers/anime/ign-waifu.png"
+        ",/home/john/wallpapers/gruvbox-wallpapers/wallpapers/minimalistic/gruv-mistakes.png"
       ];
     };
   };
@@ -635,7 +635,7 @@ in
       # Background and Shading
       background = {
         path
-        = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/anime/ign-waifu.png";
+        = "/home/john/wallpapers/gruvbox-wallpapers/wallpapers/anime/joyboy.png";
         blur_passes = 1;
         blur_size = 8;
         contrast = 0.85;
@@ -967,7 +967,7 @@ in
       bg-col-light: #282828;
       border-col: #928374;
       selected-col: #3C3836;
-      green: #98971A;
+      green: #689D6A;
       fg-col: #FBF1C7;
       fg-col2: #EBDBB2;
       grey: #BDAE93;
