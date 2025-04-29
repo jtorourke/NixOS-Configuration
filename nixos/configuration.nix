@@ -59,6 +59,7 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
+      ./doom.nix
     ];
 
   #nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -68,6 +69,7 @@ in
   #boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
+  boot.kernelModules = [ "ntfs3" "exfat" ];
   boot.loader = {
     timeout = 60;
     grub = {
@@ -130,7 +132,24 @@ in
       ExecStart = ''home-manager switch'';
     };
   };
-  
+
+  systemd.user.services.hypridle = {
+    enable = true;
+    description = "Hyprland idle daemon";
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.hypridle}/bin/hypridle";
+      Restart = "on-failure";
+      RestartSec = 1;
+      Environment = [
+        "HYPRLAND_INSTANCE_SIGNATURE=$(ls -w1 /tmp/hypr | tail -1)"
+        "XDG_RUNTIME_DIR=/run/user/1000"
+      ];
+    };
+    wantedBy = ["hyprland-session.target"];
+    partOf = ["hyprland-session.target"];
+  };
+
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
 
@@ -160,6 +179,12 @@ in
           ];
       };
     };
+  };
+  
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
   services.hypridle.enable = true;
@@ -195,17 +220,8 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  fileSystems."/home/john/bckp" = {
-    #device = "dev/disk/by-uuid/C07CC5D17CC5C280";
-    device = "dev/sda1";
-    fsType = "ntfs";
-    options = [
-        "users"
-        "nofail"
-    ];
-  };
 
-  # Enable the X11 windowing system.
+ # Enable the X11 windowing system.
   services.xserver.enable = true;
 
  # Enable the Budgie Desktop environment.
@@ -347,7 +363,26 @@ in
   #programs.firefox.enable = true;
   services.emacs.package = pkgs.emacs-unstable;
   services.flatpak.enable = true;
-  services.udisks2.enable = true;
+  systemd.services.flatpak-repo = {
+    wantedBy = ["multi-user.target"];
+    path = [ pkgs.flatpak ];
+    script = ''
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    '';
+  };
+
+  services.devmon.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2 = {
+    enable = true;
+    settings = {
+      defaults = {
+        #automount-filter = "*";
+        #automount-options = "nosuid, nodev, nofail, x-gvfs-show";
+      };
+    };
+    mountOnMedia = true;
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -395,6 +430,10 @@ in
     #zmkBATx
     simpleBluez
     #qt6
+    usermount
+    udevil
+    ntfs3g
+    exfat
 
     # Misc. Programs
     spotify
@@ -419,6 +458,9 @@ in
     flatpak
     udisks
     udiskie
+    gvfs
+    davinci-resolve
+
 
     # Languages / Compilers / Package Managers
     rustc
@@ -444,6 +486,7 @@ in
 
     # Window Manager
     eww
+    libnotify
     hyprland
     hyprlock
     hyprpaper
