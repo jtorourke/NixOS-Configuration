@@ -43,17 +43,39 @@ in
     EDITOR = "vim";
     #BROWSER = "floorp";
     GTK_THEME = "Gruvbox Material Dark Medium";
+    DOOMDIR = "$HOME/.config/doom";
+    DOOMLOCALDIR = "$HOME/.emacs.d/.local";
   };
   home.packages = with pkgs; [
     dwindle_layout
     master_layout
     rofi-wayland
+    binutils
+    gnutls
+    zstd
+    editorconfig-core-c
   ];
   home.pointerCursor = {
     gtk.enable = true;
     package = pkgs.gnome.adwaita-icon-theme;
     name = "Adwaita";
     size = 16;
+  };
+
+  home.file.".config/doom" = {
+    source = builtins.fetchGit {
+      url = "https://github.com/jtorourke/Doom_Emacs";
+      ref = "main";
+    };
+    recursive = true;
+  };
+
+  programs.emacs = {
+    enable = true;
+    extraPackages = epkgs: [
+      epkgs.vterm
+      epkgs.pdf-tools
+    ];
   };
 
 #  programs.doom-emacs = {
@@ -149,15 +171,15 @@ in
         "home-manager switch &"
         "[workspace 1 silent] kitty &"
         "[workspace 1 silent] app.zen_browser.zen &"
-        "[workspace 2 silent] emacs &"
+        #"[workspace 2 silent] emacs &"
         "[workspace 4 silent] vesktop &"
         #"[workspace 4 silent] spotify &"
-        "[workspace 5 silent] obs &"
+        #"[workspace 5 silent] obs &"
         "nix-shell /etc/nixos/jupyter.nix &"
         "udiskie &"
         "waybar &"
-        "hyprlock &"
         "hypridle &"
+        "hyprlock &"
         "hyprpaper &"
         "nm-applet"
       ];
