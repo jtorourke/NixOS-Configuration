@@ -21,7 +21,7 @@ let
     jupyter
     calysto
     nbformat
-    #conda
+    pygments
     requests
     beautifulsoup4
   ];
@@ -59,8 +59,10 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
-      ./doom.nix
+#      ./doom.nix
     ];
+  services.tailscale.enable = true;
+  #services.doom-emacs-management.enable = true;
 
   #nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -175,7 +177,7 @@ in
         # Specify the home-manager configuration file location
           imports = [
             /home/john/.config/home-manager/home.nix
-            #<catppuccin/modules/home-manager>
+            #/home/john/flake.nix
           ];
       };
     };
@@ -359,8 +361,6 @@ in
     ];
   };
 
-  # Install firefox.
-  #programs.firefox.enable = true;
   services.emacs.package = pkgs.emacs-unstable;
   services.flatpak.enable = true;
   systemd.services.flatpak-repo = {
@@ -436,7 +436,8 @@ in
     exfat
 
     # Misc. Programs
-    spotify
+    spotify-player
+    pom
     discord
     qmk
     vial
@@ -462,7 +463,7 @@ in
     davinci-resolve
 
 
-    # Languages / Compilers / Package Managers
+    # Languages / Compilers / Package Managers / Linters
     rustc
     cargo
     julia
@@ -471,6 +472,24 @@ in
     ghc
     R
     python3
+    cmake
+    gnumake
+    haskell-language-server
+    php
+    nixfmt-classic
+    graphviz
+    rust-analyzer
+    isort
+    pipenv
+    shellcheck
+    zig
+    texliveFull
+    texlivePackages.wrapfig2
+    texlivePackages.pdfmsym
+    texlivePackages.ifsym
+    texlivePackages.utfsym
+    texlivePackages.marvosym
+    texlivePackages.wasysym
 
     # Fonts
     font-manager

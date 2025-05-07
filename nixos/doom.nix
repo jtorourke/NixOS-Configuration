@@ -1,30 +1,54 @@
-{ config, pkgs, ... }:
+# doom.nix
+{ pkgs ? import <nixpkgs> {} }:
 
 let
-  doom-emacs = pkgs.callPackage (import (builtins.fetchTarball {
-    url = "https://github.com/nix-community/nix-doom-emacs/archive/master.tar.gz";
-    sha256 = "0cykflc1xbar21lx253cnxvx024zbvlsyinrnarclsyl3vpx259h";
-  })) {
-    doomPrivateDir = ./doom-config;  # Path to your Doom config
-  };
-in
-{
-  environment.systemPackages = with pkgs; [
-    # Add required dependencies
+  requiredPackages = with pkgs; [
     git
+    emacs
     ripgrep
     fd
-    clang
-    (ripgrep.override { withPCRE2 = true; })
   ];
+in
+pkgs.stdenv.mkDerivation {
+  name = "doom-emacs-installer";
+  nativeBuildInputs = [ pkgs.makeWrapper ];
+  dontUnpack = true;
 
-  services.emacs = {
-    enable = true;
-    package = doom-emacs;
-  };
+  installPhase = ''
+    mkdir -p $out/bin
 
-  # Add emacs-overlay
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz"))
-  ];
+    # Create the installation script
+    cat > $out/bin/doom-install <<'EOF'
+    #!/bin/sh
+    set -euo pipefail
+
+    # Clean existing configurations
+    echo "Removing any existing Emacs configurations..."
+    rm -rf "$HOME/.emacs.d" "$HOME/.doom.d" "$HOME/.config/emacs" "$HOME/.config/doom"
+
+    # Clone Doom Emacs
+    echo "Cloning Doom Emacs repository..."
+    git clone --depth 1 https://github.com/doomemacs/doomemacs "$HOME/.emacs.d"
+
+    # Clone personal configuration to XDG location
+    echo "Cloning personal Doom configuration..."
+    git clone https://github.com/jtorourke/Doom_Emacs "$HOME/.config/doom"
+
+    # Install Doom with personal configuration
+    echo "Installing Doom Emacs with custom config..."
+    "$HOME/.emacs.d/bin/doom" install
+
+    # Final message
+    echo "Doom Emacs installation complete with personal configuration!"
+    echo "Add ~/.emacs.d/bin to your PATH or run:"
+    echo "  ~/.emacs.d/bin/doom sync"
+    EOF
+
+    # Make script executable
+    chmod +x $out/bin/doom-install
+
+    # Wrap script to ensure dependencies are available
+    wrapProgram $out/bin/doom-install \
+      --prefix PATH : "${pkgs.lib.makeBinPath requiredPackages}"
+  '';
 }
