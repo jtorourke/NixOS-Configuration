@@ -54,7 +54,11 @@ in
     gnutls
     zstd
     editorconfig-core-c
+    ripgrep
+    fd
+    (ripgrep.override { withPCRE2 = true; })
   ];
+  
   home.pointerCursor = {
     gtk.enable = true;
     package = pkgs.gnome.adwaita-icon-theme;
@@ -62,25 +66,26 @@ in
     size = 16;
   };
 
-  home.file.".config/doom" = {
-    source = builtins.fetchGit {
-      url = "https://github.com/jtorourke/Doom_Emacs";
-      ref = "main";
-    };
-    recursive = true;
-  };
+#  home.file.".config/doom" = {
+#    source = builtins.fetchGit {
+#      url = "https://github.com/jtorourke/Doom_Emacs";
+#      ref = "main";
+#    };
+#    recursive = true;
+#  };
 
-  programs.emacs = {
-    enable = true;
-    extraPackages = epkgs: [
-      epkgs.vterm
-      epkgs.pdf-tools
-    ];
-  };
+#  programs.emacs = {
+#    enable = true;
+#    extraPackages = epkgs: [
+#      epkgs.vterm
+#      epkgs.pdf-tools
+#    ];
+#  };
 
 #  programs.doom-emacs = {
-#   enable = true;
-#    doomDir = inputs.doom-config;  # or e.g. `./doom.d` for a local configuration 
+#    enable = true;
+#    doomPrivateDir = inputs.doom-config; # Reference the fetched Doom config
+#    emacsPackage = pkgs.emacs-unstable; # Ensure Emacs version matches
 #  };
 
   dconf = {
@@ -172,14 +177,13 @@ in
         "[workspace 1 silent] kitty &"
         "[workspace 1 silent] app.zen_browser.zen &"
         #"[workspace 2 silent] emacs &"
-        "[workspace 4 silent] vesktop &"
+        #"[workspace 4 silent] vesktop &"
         #"[workspace 4 silent] spotify &"
         #"[workspace 5 silent] obs &"
         "nix-shell /etc/nixos/jupyter.nix &"
         "udiskie &"
         "waybar &"
         "hypridle &"
-        "hyprlock &"
         "hyprpaper &"
         "nm-applet"
       ];
@@ -825,7 +829,7 @@ in
       alias ll="ls -al"
       alias crone="crontab -e"
       alias cronl="crontab -l"
-      alias doom="~/.config/emacs/bin/doom"
+      alias doom="~/.emacs.d/bin/doom"
       alias hc="vim .config/home-manager/home.nix"
       alias nc="sudo vim /etc/nixos/configuration.nix"
 	
@@ -834,6 +838,9 @@ in
       
       # Add local binaries to PATH
       PATH="$HOME/.local/bin:$PATH"
+
+      # Add doom
+      PATH="$HOME/.emacs.d/bin:$PATH"
     '';
   };
 
