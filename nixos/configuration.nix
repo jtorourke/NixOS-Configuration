@@ -330,35 +330,155 @@ in
     description = "John";
     extraGroups = [ "networkmanager" "wheel" "storage" ];
     packages = with pkgs; [
-    emacs
-    vim
-    neovim
-    #qtile
-    julia
+    wget
+    curl
+    xorg.xrandr
+    os-prober
     ranger
     nnn
     neofetch
     screenfetch
     fastfetch
     alacritty
-    python3
+    kitty
+    pandoc
     zsh
     starship
-    #rstudio
-    rustc
     git
-    cargo
-    spotify
+    home-manager
+    ripgrep
+    coreutils
+    fd
+    htop
+    greetd.tuigreet
+    greetd.wlgreet
+    lazygit
+    fm
+    grimblast
+    qview
+    mpv
+    audacious
+    wf-recorder
+    wl-clip-persist
+    sleek-grub-theme
+    #spacevim
+    appimage-run
+    #zmkBATx
+    simpleBluez
+    #qt6
+    usermount
+    udevil
+    ntfs3g
+    exfat
+
+    # Misc. Programs
+    spotify-player
+    pom
     discord
     qmk
     vial
-    iosevka
-    nerdfonts
-    font-awesome
     morgen
     protonmail-bridge
-    home-manager
-    ];
+    marktext
+    bitwarden-desktop
+    vesktop
+    obs-studio
+    obs-studio-plugins.wlrobs
+    #brave
+    #floorp
+    #vivaldi
+    #vivaldi-ffmpeg-codecs
+    starship
+    nautilus
+    git-credential-oauth
+    ispell
+    flatpak
+    udisks
+    udiskie
+    gvfs
+    davinci-resolve
+
+
+    # Languages / Compilers / Package Managers / Linters
+    rustc
+    cargo
+    (julia_19-bin.withPackages ["DataFrames" "DataFramesMeta" "Statistics" "Plots" "CSV" "Random"])
+    clang
+    stack
+    ghc
+    R
+    python311
+    cmake
+    gnumake
+    haskell-language-server
+    php
+    nixfmt-classic
+    graphviz
+    rust-analyzer
+    isort
+    pipenv
+    shellcheck
+    zig
+    texliveFull
+    texlivePackages.wrapfig2
+    texlivePackages.pdfmsym
+    texlivePackages.ifsym
+    texlivePackages.utfsym
+    texlivePackages.marvosym
+    texlivePackages.wasysym
+
+    # Fonts
+    font-manager
+    nerdfonts
+    font-awesome
+    iosevka
+
+    # Theming
+    gruvbox-gtk-theme
+    gruvbox-plus-icons
+    capitaine-cursors-themed
+    catppuccin
+
+    # Window Manager
+    eww
+    libnotify
+    hyprland
+    hyprlock
+    hyprpaper
+    hyprpicker
+    hypridle
+    waybar
+    rofi-wayland
+    rofi-power-menu
+    rofi-rbw-wayland
+    swww # for wallpapers
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-hyprland
+    xwayland
+    meson
+    wayland-protocols
+    wayland-utils
+    wl-clipboard
+    wlroots
+    ly
+    emptty
+    pavucontrol
+    blueman
+    bluez
+    bluez-tools
+    blueberry
+
+    # File System support
+    ntfs3g
+    btrfs-progs
+
+    # Editors
+    emacs
+    vim
+    neovim
+    #rstudio
+    #jetbrains.dataspell
+    ] ++ pythonPkgs ++ rPkgs ++ haskellPkgs;
   };
 
   services.emacs.package = pkgs.emacs-unstable;
@@ -466,12 +586,12 @@ in
     # Languages / Compilers / Package Managers / Linters
     rustc
     cargo
-    julia
+    (julia_19-bin.withPackages ["DataFrames" "DataFramesMeta" "Statistics" "Plots" "CSV" "Random"])
     clang
     stack
     ghc
     R
-    python3
+    python311
     cmake
     gnumake
     haskell-language-server
