@@ -20,5 +20,5 @@ Hoping to iron out more "issues" as they arise but, I will not be making any adj
     - [X] Window Binds
     - [X] Blur
     - [X] Reset configuration on `home-manager switch`
-~~- [ ] Ranger Customization~~ Using Nautilus and Dired
-~~- [ ] QMK setup~~ No need to do this as I have swapped to a ZMK based board.
+- [ ] ~~Ranger Customization~~ Using Nautilus and Dired
+- [ ] ~~QMK setup~~ No need to do this as I have swapped to a ZMK based board.
