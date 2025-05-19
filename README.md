@@ -13,12 +13,12 @@ Hoping to iron out more "issues" as they arise but, I will not be making any adj
 - [ ] OBS Overlay setup and Version Control
 - [X] Complete transition from Vim to Doom Emacs
 - [X] Install and configure Doom Emacs properly
-- [-] Configure Hyprpicker
-- [-] Hyprland
+- [X] Configure Hyprpicker
+- [X] Hyprland
     - [X] Animations
-    - [-] Window Rules
-    - [-] Window Binds
-    - [-] Blur
+    - [X] Window Rules
+    - [X] Window Binds
+    - [X] Blur
     - [X] Reset configuration on `home-manager switch`
 ~~- [ ] Ranger Customization~~ Using Nautilus and Dired
 ~~- [ ] QMK setup~~ No need to do this as I have swapped to a ZMK based board.
