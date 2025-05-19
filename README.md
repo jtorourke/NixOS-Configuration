@@ -6,14 +6,19 @@ Heavy inspiration (and some copied snippets) from [Frost-Phoenix's](https://gith
 Hoping to iron out more "issues" as they arise but, I will not be making any adjustments or helping with installation issues if you decide to use this.
 
 ## **Current To-Do's:**
-- [ ] Complete transition from Vim to Neovim
-- [ ] Install and configure Doom Emacs properly
-- [ ] Configure Hyprpicker
-- [ ] Hyprland
-    - [ ] Animations
-    - [ ] Window Rules
-    - [ ] Window Binds
-    - [ ] Blur
-    - [ ] Reset configuration on `home-manager switch`
-- [ ] Ranger Customization
-- [ ] QMK setup
+- [ ] Docker enablement and setup
+- [ ] Updated GRUB splash screen
+- [ ] Better wallpaper configuration on new install (possible installation script for fresh installs)
+- [ ] Icon and Text size fix
+- [ ] OBS Overlay setup and Version Control
+- [X] Complete transition from Vim to Doom Emacs
+- [X] Install and configure Doom Emacs properly
+- [-] Configure Hyprpicker
+- [-] Hyprland
+    - [X] Animations
+    - [-] Window Rules
+    - [-] Window Binds
+    - [-] Blur
+    - [X] Reset configuration on `home-manager switch`
+~~- [ ] Ranger Customization~~ Using Nautilus and Dired
+~~- [ ] QMK setup~~ No need to do this as I have swapped to a ZMK based board.
