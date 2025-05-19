@@ -38,7 +38,7 @@ in
 {
   home.username = "john";  # Replace with your actual username
   home.homeDirectory = "/home/john";  # Adjust the path if necessary
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
   home.sessionVariables = {
     EDITOR = "vim";
     #BROWSER = "floorp";
@@ -61,7 +61,7 @@ in
   
   home.pointerCursor = {
     gtk.enable = true;
-    package = pkgs.gnome.adwaita-icon-theme;
+    package = pkgs.adwaita-icon-theme;
     name = "Adwaita";
     size = 16;
   };
@@ -155,6 +155,12 @@ in
 
   programs.lazygit = {
     enable = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
   };
 
 #  services.hypridle = {
@@ -832,10 +838,13 @@ in
       alias doom="~/.emacs.d/bin/doom"
       alias hc="vim .config/home-manager/home.nix"
       alias nc="sudo vim /etc/nixos/configuration.nix"
+      alias rebuild="sudo nixos-rebuild switch && home-manager switch"
 	
       # Initialize Starship prompt
       #eval "$(starship init zsh)"
-      
+
+      eval "$(direnv hook zsh)"
+
       # Add local binaries to PATH
       PATH="$HOME/.local/bin:$PATH"
 

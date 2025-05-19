@@ -169,11 +169,12 @@ in
 
   users.defaultUserShell = pkgs.zsh;
 
+
   home-manager = {
     useUserPackages = true;
     users = {
         john = {
-          home.stateVersion = "24.11";
+          home.stateVersion = "25.05";
         # Specify the home-manager configuration file location
           imports = [
             /home/john/.config/home-manager/home.nix
@@ -429,7 +430,7 @@ in
 
     # Fonts
     font-manager
-    nerdfonts
+    #nerdfonts
     font-awesome
     iosevka
 
@@ -581,6 +582,7 @@ in
     udiskie
     gvfs
     davinci-resolve
+    direnv
 
 
     # Languages / Compilers / Package Managers / Linters
@@ -613,7 +615,7 @@ in
 
     # Fonts
     font-manager
-    nerdfonts
+    #nerdfonts
     font-awesome
     iosevka
 
@@ -664,9 +666,11 @@ in
     #jetbrains.dataspell
   ] ++ pythonPkgs ++ rPkgs ++ haskellPkgs;
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     iosevka
-    nerdfonts
+    nerd-fonts.iosevka
+    nerd-fonts.iosevka-term
+    nerd-fonts.symbols-only
     font-awesome
   ];
   
@@ -695,6 +699,6 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 
 }
