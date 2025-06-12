@@ -54,9 +54,9 @@ let
   ];
 
 in
-{
-  imports =
-    [ # Include the results of the hardware scan.
+  {
+    imports =
+      [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
 #      ./doom.nix
@@ -81,17 +81,19 @@ in
       useOSProber = true;
       #splashImage = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
       font = "${pkgs.iosevka}/share/fonts/truetype/Iosevka-Regular.ttf";
-      theme = pkgs.stdenv.mkDerivation {
-         pname = "distro-grub-themes";
-         version = "3.1";
-         src = pkgs.fetchFromGitHub {
-          owner = "AdisonCavani";
-          repo = "distro-grub-themes";
-          rev = "v3.1";
-          hash = "sha256-ZcoGbbOMDDwjLhsvs77C7G7vINQnprdfI37a9ccrmPs=";
-        };
-        installPhase = "cp -r customize/nixos $out";
-      };
+      theme = pkgs.catppuccin-grub;
+      gfxmodeEfi = "3440x1440";
+      #theme = pkgs.stdenv.mkDerivation {
+      #   pname = "distro-grub-themes";
+      #   version = "3.1";
+      #   src = pkgs.fetchFromGitHub {
+      #    owner = "AdisonCavani";
+      #    repo = "distro-grub-themes";
+      #    rev = "v3.1";
+      #    hash = "sha256-ZcoGbbOMDDwjLhsvs77C7G7vINQnprdfI37a9ccrmPs=";
+      #  };
+      #  installPhase = "cp -r customize/nixos $out";
+      #};
       extraConfig = ''
         GRUB_TIMEOUT=60
       '';
@@ -124,7 +126,11 @@ in
   };
 
   programs.appimage.binfmt = true;
-  
+
+  #Docker Setup
+  virtualisation.docker.enable = true;
+  users.extraGroups.docker.members = [ "john" ];
+
   systemd.user.services.home-manager-auto = {
     enable = true;
     # after = [ "network.target" ];
@@ -516,6 +522,8 @@ in
   environment.systemPackages = with pkgs; [
     # System Packages
     wget
+    libtool
+    docker
     curl
     xorg.xrandr
     os-prober
@@ -555,6 +563,8 @@ in
     udevil
     ntfs3g
     exfat
+    catppuccin-grub
+    oh-my-zsh
 
     # Misc. Programs
     spotify-player
@@ -685,7 +695,7 @@ in
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  #services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

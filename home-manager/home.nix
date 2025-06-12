@@ -203,7 +203,7 @@ in
         "col.active_border" = "rgb(8ec07c) rgb(689d6a) 45deg";
         "col.inactive_border" = "rgb(3c3836) rgb(32302f) 45deg";
         layout = "dwindle";
-        border_part_of_window = false;
+        #border_part_of_window = false;
         no_border_on_floating = false;
       };
 
@@ -226,7 +226,7 @@ in
         new_status = "master";
         special_scale_factor = 1;
         #no_gaps_when_only = false;
-        always_center_master = true;
+        #always_center_master = true;
         orientation = "center";
       };
 
@@ -322,8 +322,8 @@ in
 
         # Misc. Binds
         ## Screenshots
-        "$mainMod, g, exec, grimblast --notify --cursor --freeze save area ~/Pictures/$(date +'%m-%d-%Y-At-%Ih%Mm%Ss').png"
-        "$mainMod SHIFT, g, exec, grimblast --notify --cursor --freeze copy area"
+        "$mainMod, g, exec, grimblast --freeze save area ~/Pictures/$(date +'%m-%d-%Y-At-%Ih%Mm%Ss').png"
+        "$mainMod SHIFT, g, exec, grimblast --freeze copy area"
 
         ## Layout Swapping
         "$mainMod SHIFT, w, exec, dwindle_layout"
@@ -336,26 +336,45 @@ in
       ];
 
       # windowrule
-      windowrule = [
-        "float,qView"
-        "center,qView"
-        "size 1200 800,qView"
-        "float,audacious"
-        "center,audacious"
-        "size 1200 800,audacious"
-        "float,pavucontrol"
-        "center,pavucontrol"
-        "size 1200 800,pavucontrol"
-        "float,^(rofi)$"
-        "workspace 5,obs"
-        "workspace 4, spotify"
-        "workspace 4, vesktop"
-      ];
+      #windowrule = [
+      #  "float,qView"
+      #  "center,qView"
+      #  "size 1200 800,qView"
+      #  "float,audacious"
+      #  "center,audacious"
+      #  "size 1200 800,audacious"
+      #  "float,pavucontrol"
+      #  "center,pavucontrol"
+      #  "size 1200 800,pavucontrol"
+      #  "float,^(rofi)$"
+      #  "workspace 5,obs"
+      #  "workspace 4,spotify"
+      #  "workspace 4,vesktop"
+      #];
 
       windowrulev2 = [
-        "float,class:^(rofi)$"
-        "float,title:^(rofi)$"
+        # qView rules
+        "float,class:^(qView)$"
+        "move center,class:^(qView)$"
+        "size 1200 800,class:^(qView)$"
+
+        # audacious rules
+        "float,class:^(audacious)$"
+        "move center,class:^(audacious)$"
+        "size 1200 800,class:^(audacious)$"
+
+        # pavucontrol rules
         "float,class:^(pavucontrol)$"
+        "move center,class:^(pavucontrol)$"
+        "size 1200 800,class:^(pavucontrol)$"
+
+        # rofi rule
+        "float,class:^(rofi)$"
+
+        # Workspace rules
+        "workspace 5,class:^(obs)$"
+        "workspace 4,class:^(spotify)$"
+        "workspace 4,class:^(vesktop)$"
       ];
     };
     extraConfig = ''
@@ -749,14 +768,19 @@ in
     #settings = pkgs.lib.importTOML ../starship.toml;
   };
 
-  programs.zsh = {
+
+  programs.zsh = with custom; {
     enable = true;
+    oh-my-zsh = {
+      enable = true;
+      custom = "$HOME/.config/home-manager";
+      theme = "jonathan";
+    };
     #catppuccin.enable = true;
     # Other Zsh configurations...
 
     initExtra = ''
       autoload -U colors && colors
-      PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
       [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
       [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
       autoload -U compinit
