@@ -128,7 +128,17 @@ in
   programs.appimage.binfmt = true;
 
   #Docker Setup
-  virtualisation.docker.enable = true;
+  virtualisation = {
+    docker = {
+      enable = true;
+    };
+    #podman = {
+    #  enable = true;
+    #  dockerCompat = true;
+    #  defaultNetwork.settings.dns_enabled = true;
+    #};
+  };
+
   users.extraGroups.docker.members = [ "john" ];
 
   systemd.user.services.home-manager-auto = {
@@ -511,6 +521,22 @@ in
     mountOnMedia = true;
   };
 
+  #services.postgresql = {
+  #  enable = true;
+  #  ensureDatabases = [ "test_db" "mm_testing" ];
+  #  authentication = pkgs.lib.mkOverride 10 ''
+  #    local all all trust
+  #  '';
+  #};
+
+  #PG Admin setup
+  #services.pgadmin = {
+  #  enable = true;
+  #  initialEmail = "johnt@orourke.one";
+  #  initialPasswordFile = "/home/john/pass.txt";
+  #};
+
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.overlays = [
@@ -524,6 +550,10 @@ in
     wget
     libtool
     docker
+    docker-compose
+    podman
+    podman-desktop
+    podman-compose
     curl
     xorg.xrandr
     os-prober
@@ -593,7 +623,9 @@ in
     gvfs
     davinci-resolve
     direnv
-
+    #pgadmin4-desktopmode
+    dbeaver-bin
+    #postgresql_17_jit
 
     # Languages / Compilers / Package Managers / Linters
     rustc
