@@ -173,6 +173,7 @@ in
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-32.3.3"
+    "electron-34.5.8"
   ];
 
   programs = {
@@ -567,7 +568,7 @@ in
     pandoc
     zsh
     starship
-    git
+    gitFull
     home-manager
     ripgrep
     coreutils
@@ -616,6 +617,7 @@ in
     starship
     nautilus
     git-credential-oauth
+    git-credential-manager
     ispell
     flatpak
     udisks
@@ -699,6 +701,8 @@ in
     # File System support
     ntfs3g
     btrfs-progs
+    genymotion
+    aemu
 
     # Editors
     emacs
