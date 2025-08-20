@@ -742,7 +742,7 @@ in
       name = "IosevkaTerm Nerd Font Mono";
       size = 12;
     };
-    theme = "Gruvbox Material Dark Medium";
+    themeFile = "GruvboxMaterialDarkMedium";
     shellIntegration = {
       enableZshIntegration = true;
     };
@@ -779,7 +779,7 @@ in
     #catppuccin.enable = true;
     # Other Zsh configurations...
 
-    initExtra = ''
+    initContent = ''
       autoload -U colors && colors
       [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
       [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
