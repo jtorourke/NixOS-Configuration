@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }:
 
+
 with lib;
 
 let
@@ -49,7 +50,7 @@ in
   home.packages = with pkgs; [
     dwindle_layout
     master_layout
-    rofi-wayland
+    rofi
     binutils
     gnutls
     zstd

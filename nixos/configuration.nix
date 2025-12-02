@@ -61,7 +61,7 @@ in
       <home-manager/nixos>
 #      ./doom.nix
     ];
-  services.tailscale.enable = true;
+  services.tailscale.enable = false;
   #services.doom-emacs-management.enable = true;
 
   #nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -390,7 +390,7 @@ in
     exfat
 
     # Misc. Programs
-    spotify-player
+    spotify-qt
     pom
     discord
     qmk
@@ -420,7 +420,7 @@ in
     # Languages / Compilers / Package Managers / Linters
     rustc
     cargo
-    (julia_19-bin.withPackages ["DataFrames" "DataFramesMeta" "Statistics" "Plots" "CSV" "Random"])
+    (julia_111-bin.withPackages ["DataFrames" "DataFramesMeta" "Statistics" "Plots" "CSV" "Random"])
     clang
     stack
     ghc
@@ -466,7 +466,7 @@ in
     hyprpicker
     hypridle
     waybar
-    rofi-wayland
+    rofi
     rofi-power-menu
     rofi-rbw-wayland
     swww # for wallpapers
@@ -596,9 +596,10 @@ in
     exfat
     catppuccin-grub
     oh-my-zsh
+    bootdev-cli
 
     # Misc. Programs
-    spotify-player
+    spotify-qt
     pom
     discord
     qmk
@@ -632,7 +633,7 @@ in
     # Languages / Compilers / Package Managers / Linters
     rustc
     cargo
-    (julia_19-bin.withPackages ["DataFrames" "DataFramesMeta" "Statistics" "Plots" "CSV" "Random"])
+    (julia_111-bin.withPackages ["DataFrames" "DataFramesMeta" "Statistics" "Plots" "CSV" "Random"])
     clang
     stack
     ghc
@@ -678,7 +679,7 @@ in
     hyprpicker
     hypridle
     waybar
-    rofi-wayland
+    rofi
     rofi-power-menu
     rofi-rbw-wayland
     swww # for wallpapers
@@ -740,9 +741,8 @@ in
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 
 }
