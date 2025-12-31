@@ -74,11 +74,13 @@ in
   boot.kernelModules = [ "ntfs3" "exfat" ];
   boot.loader = {
     timeout = 60;
+    systemd-boot.configurationLimit = 3;
     grub = {
       enable = true;
       efiSupport = true;
       device = "nodev";
       useOSProber = true;
+      configurationLimit = 3;
       #splashImage = "/home/john/Pictures/gruvbox-wallpapers/wallpapers/minimalistic/gruvbox-rainbow-nix.png";
       font = "${pkgs.iosevka}/share/fonts/truetype/Iosevka-Regular.ttf";
       theme = pkgs.catppuccin-grub;
@@ -129,6 +131,9 @@ in
 
   #Docker Setup
   virtualisation = {
+    waydroid = {
+      enable = true;
+    };
     docker = {
       enable = true;
     };
@@ -390,7 +395,8 @@ in
     exfat
 
     # Misc. Programs
-    spotify-qt
+    spotify-player
+    inkscape-with-extensions
     pom
     discord
     qmk
@@ -597,9 +603,11 @@ in
     catppuccin-grub
     oh-my-zsh
     bootdev-cli
+    exercism
 
     # Misc. Programs
-    spotify-qt
+    spotify-player
+    inkscape-with-extensions
     pom
     discord
     qmk
@@ -630,7 +638,7 @@ in
     dbeaver-bin
     #postgresql_17_jit
 
-    # Languages / Compilers / Package Managers / Linters
+    # Languages / Compilers / Package Managers / Linters / Language Servers
     rustc
     cargo
     (julia_111-bin.withPackages ["DataFrames" "DataFramesMeta" "Statistics" "Plots" "CSV" "Random"])
@@ -650,6 +658,10 @@ in
     pipenv
     shellcheck
     zig
+    beam28Packages.erlang
+    beam28Packages.rebar3
+    gleam
+    glas
     texliveFull
     texlivePackages.wrapfig2
     texlivePackages.pdfmsym
